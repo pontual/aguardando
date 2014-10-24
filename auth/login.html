@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src='https://cdn.firebase.com/js/client/1.1.1/firebase.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+	<script src='../js/util.js'></script>
+  </head>
+  
+  <body>
+	<form id="loginForm">
+		email: <input type="text" name="email"><br>
+		password: <input type="password" name="password"><br>
+		<input type="submit">
+	</form>
+
+	<button id="logoutButton">Log out</button>
+
+	<div id="result">
+	</div>
+	
+	<div id="content">
+	</div>
+
+	<script src="../js/connect.js"></script>
+    <script>
+
+ref.onAuth(function(authData) {
+	if(authData) {
+		setDiv("content", "Welcome back " + authData.uid);
+	} else {
+		setDiv("content", "Please log in");
+	}
+});
+
+$("#loginForm").submit(function(event) {
+	event.preventDefault();
+	ref.authWithPassword({
+		email: formInputVal("loginForm", "email"),
+		password: formInputVal("loginForm", "password"),
+	}, function(error, authData) {
+		if (error === null) {
+			setDiv("result", "User ID: " + authData.uid);
+		} else {
+			setDiv("result", error);
+		}
+	}, {
+		remember: "sessionOnly"
+	});
+});
+
+$("#logoutButton").click(function(event) {
+	ref.unauth();
+});
+	</script>
+  </body>
+</html>

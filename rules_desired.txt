@@ -1,0 +1,18 @@
+{
+    "rules": {
+      "organizacao": {
+        "pontual": {
+          ".read": "auth != null",
+          ".write": "auth.uid === 1"
+        },
+        "unisia": {
+          ".read": "auth != null",
+          ".write": "auth.uid === 6"
+        }
+      },
+      "users": {
+        ".read": true,
+        ".write": "auth.uid === 1"
+      }
+    }
+}

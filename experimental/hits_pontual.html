@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src='https://cdn.firebase.com/js/client/1.1.1/firebase.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+	<script src='../js/util.js'></script>
+  </head>
+  
+  <body>
+
+	<script>
+// manually log in
+var baseRef = new Firebase("https://aguardando.firebaseio.com/")
+
+// baseRef.unauth();
+
+baseRef.authWithPassword({
+	email: "heitorpontual@gmail.com",
+	password: "heitor"
+}, function(error, authData) { });
+
+	</script>
+	
+	<script src="../js/connection_manager.js"></script>
+    <script>
+var currentHits = 0;
+
+ref.once('value', function (snapshot) {
+	currentHits = parseInt(snapshot.val().hits);
+	alert(currentHits);
+	ref.update({ hits: currentHits + 1 });
+}, function (error) {
+	alert("Error: " + error.code);
+});
+
+	</script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src='https://cdn.firebase.com/js/client/1.1.1/firebase.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+	<script src='../js/util.js'></script>
+  </head>
+  
+  <body>
+  	<div id="content">
+	</div>
+
+    <script>
+var ref = new Firebase("https://aguardando.firebaseio.com/organizacao/pontual/status");
+var baseRef = new Firebase("https://aguardando.firebaseio.com/");
+
+var authData = baseRef.getAuth();
+
+if(authData) {
+	setDiv("content", "Welcome back " + authData.uid);
+} else {
+	setDiv("content", "Please log in");
+}
+
+ref.set({
+	data: "2014-10-24",
+	author: "heitor",
+	location: {
+		city: "Sao Paulo",
+		country: "Brazil",
+	}
+});
+	</script>
+  </body>
+</html>
