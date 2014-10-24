@@ -1,0 +1,48 @@
+Data structures
+
+Usuario
+> id (numero)
+> nome (username)
+> senha
+> email (para 
+> privilegios (editar, criar novos usuarios)
+
+Grupo
+> id
+> nome (username)
+> listof Usuario.id
+
+Produto
+> id (? is it necessary?)
+> Grupo.id
+> codigo (unique when combined with Grupo.id)
+
+Vendedor
+> Grupo.id
+
+Cliente
+> Grupo.id
+
+Item de linha
+> Grupo.id
+
+Pedido
+> Grupo.id
+
+Chegando
+> Grupo.id
+> Produto.codigo
+
+
+Users belong to groups, and pedidos, produtos and clientes are tied to groups. 
+
+So anyone can create their own group and define their own pedidos, produtos,
+and clientes
+
+Filter by group first
+
+Does directory structure automatically divide groups and make filtering and
+authentication redundant?
+
+Does everything need an unique ID? Produtos might have the same codigo but 
+belong to different groups
