@@ -1,3 +1,8 @@
+* object property 'time' allows filtering by time
+
+* create way of removing or deactivating Chegando entries when a container
+arrives
+
 Data structures
 
 Usuario
