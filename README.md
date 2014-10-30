@@ -64,6 +64,20 @@ Chegando
 
 # Tasks
 
+copy the structure of TiNAtasks, and apply the following changes
+
+* replace table trs with divs, as in the [second answer here](http://stackoverflow.com/questions/4035966/create-a-html-table-where-each-tr-is-a-form)
+
+* edits don't automatically save to firebase, see chat example in angularjs/angularfire/chat: `input ng-change="messages.$save(message)"`
+
+* make each row edit its own form, toggle show/hide
+
+* $add, update has `.then()` callbacks, use them to modify a status message indicating success "Successfully updated / added ..."
+
+* css style changes based on line item status
+
+Undo one level?
+
 if Desistencia, then do not subtract from container totals (Chegando)
 
 Does callback to child_modified provide previous values?
