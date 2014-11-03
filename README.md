@@ -9,6 +9,20 @@ tinacg
 |
 +- banana_store
    |
+   +- users
+   |  |
+   |  +- $auth.uid (1)
+   |  |  |
+   |  |  +- name: "Heitor"
+   |  |  +- group: "pontual"
+   |  |  +- admin: 1 or 0
+   |  |
+   |  +- $auth.uid (2)
+   |     |
+   |     +- name: "hcct"
+   |     +- group: "unisia"
+   |     +- admin: 1
+   |
    +- clientes
    |  |
    |  +- "2180"
