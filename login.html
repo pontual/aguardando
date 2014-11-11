@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html ng-app="LoginApp">
+  <head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+	<script src="js/firebase.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script src="js/angularfire.min.js"></script>
+	<script src="loginapp.js"></script>
+  </head>
+  <body ng-controller="LoginController">
+	<form ng-submit="firebaseLogin(userEmail, userPassword)" id="loginForm">
+	  <table>
+		<tr>
+		  <td>Email:</td><td><input ng-model="userEmail" autofocus="autofocus" /></td>
+		</tr>
+		<tr>
+		  <td>Password:</td><td><input type="password" ng-model="userPassword" /></td>
+		</tr>
+		<tr>
+		  <td colspan="2">
+			<input type="submit" value="Log in" />
+		  </td>
+		</tr>
+	  </table>
+	  
+	</form>
+	
+	<div id="status"></div>
+  </body>
+</html>

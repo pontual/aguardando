@@ -1,0 +1,28 @@
+Tasks
+=====
+
+create operadores subtree to store user data like proper name, email
+
+when typing cliente codigo, if there is no match, show a link "criar novo",
+when this is clicked, a text field pops up and autosaves new data
+
+if Desistencia, then do not subtract from container totals (Chegando)
+
+Does callback to child_modified provide previous values?
+
+Count total number of line items per container, to verify against physical
+paper copies
+
+find a way to store container number, when changing status to Reserva (add
+callback to child_modified?)
+
+how to handle multiple chegandos on same item? could tally by codigo and
+concatenate the multiple containers into a string
+
+line item's container label should be auto-computed
+
+LineItems table should be sortable by column heading, like tablesorter.
+Double-clicking reverses sort
+
+add created and last modified timestamps (new Date()).getTime()
+

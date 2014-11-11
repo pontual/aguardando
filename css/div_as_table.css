@@ -1,0 +1,15 @@
+form.table, div.table {
+	display:table;
+    width: 1%;
+    white-space: nowrap;
+    table-layout: initial;
+}
+form.tr, div.tr {
+	display:table-row;
+}
+span.td {
+	display:table-cell;
+    padding: 0px 10px 0px 10px;
+/* min-width: 150px; */
+    border-bottom: 1px dotted #CCCCCC;
+}

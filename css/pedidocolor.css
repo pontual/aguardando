@@ -1,0 +1,24 @@
+div.reservaStyle {
+    background: #E0FFFF;
+}
+
+div.desistenciaStyle {
+    background: #FFDDEE;
+}
+
+div.containerStyle {
+    background: #FFFFB0;
+}
+
+div.desistenciaDoContainerStyle {
+    background: #FFDDC6;
+}
+
+div.faturadoStyle {
+    background: #BBFFCC;
+}
+
+div.canceladoStyle {
+    background: #DDDDDD;
+    text-decoration: line-through;
+}

@@ -1,155 +1,87 @@
-# Aguardando
-
-
-
-# Models
-
-```
-tinacg
-|
-+- banana_store
-   |
-   +- users
-   |  |
-   |  +- $auth.uid (1)
-   |  |  |
-   |  |  +- name: "Heitor"
-   |  |  +- group: "pontual"
-   |  |  +- admin: 1 or 0
-   |  |
-   |  +- $auth.uid (2)
-   |     |
-   |     +- name: "hcct"
-   |     +- group: "unisia"
-   |     +- admin: 1
-   |
-   +- clientes
-   |  |
-   |  +- "2180"
-   |  |  |
-   |  |  +- name: "Redd"
-   |  |
-   |  +- "2742"
-   |     |
-   |     +- name: "XBZ"
-   |
-   +- produtos
-   |  |
-   |  +- "137350B"
-   |  |  |
-   |  |  +- name: "Chaveiro de metal"
-   |  |
-   |  +- "143036"
-   |     |
-   |     +- name: "Kit churrasco c/ 4 pcs"
-   |
-   +- chegando
-   |  |
-   |  +- ---firebase-timestamp
-   |     |
-   |     +- codigo: "143036"
-   |     +- quantidade: 10000  (INTEGER)
-   |     +- container: "S/N"
-   |  
-   +- lineItems
-      |
-      +- --- firebase-timestamp
-         |
-         +- timeCreated: SEE DOCS Firebase.ServerValue.TIMESTAMP
-         +- timeModified: SEE DOCS
-         +- status: one of "1: Reserva", "2: Desistencia", "3: Container",
-         |    "4: Desistencia do container", "5: Faturado", or "6: Cancelado"
-         |    Numbers are added for sorting.
-         |    "1: Reserva" are the line items from which to request
-         +- codigo: "143036"
-         +- cliente: "2180"
-         +- vendedor: "Celia"
-         +- quantidade: 200  (total, INTEGER)
-         +- jaReservado: 20  (INTEGER)
-         +- observacoes: "Com Joao"
-```         
-
-# Views
-
-LineItems (main)
-Clientes
-Produtos
-Chegando
-
 # Tasks
 
-copy the structure of TiNAtasks, and apply the following changes
+Run the computation function when adding, modifying, or removing Chegando and
+Pedido entries. The computation function's parameter is the cod. produto
 
-* replace table trs with divs, as in the [second answer here](http://stackoverflow.com/questions/4035966/create-a-html-table-where-each-tr-is-a-form)
+Function updates `produto.chegando`, `produto.containers`, `produto.sobrando`
 
-* edits don't automatically save to firebase, see chat example in angularjs/angularfire/chat: `input ng-change="messages.$save(message)"`
+"Filter" search entry followed by dropdown choice of Produto cod, nome, or
+Cliente. Does a fuzzy search to match text entry.
 
-* make each row edit its own form, toggle show/hide
+pedido has these fields:
+codigoProduto
+qtdePedida
+qtdeJaSeparada
+codigoCliente
+estado
+  (Reserva, Desistencia, Container, Desistencia do Container,
+  Faturado, Cancelado)
+obs
 
-* $add, update has `.then()` callbacks, use them to modify a status message indicating success "Successfully updated / added ..."
+# Interface
 
-* css style changes based on line item status
+### Pedido
 
-Undo one level?
+Operador digita:
+1. Cod. produto (A)
+2. Qtde. pedida (E)
+3. Qtde. ja separada (F)
+4. Cod. cliente (n/a)
+5. Reserva, Desistencia, Container, Desistencia do Container, Faturado,
+ou Cancelado (D)
+6. Observaçoes (H)
 
-if Desistencia, then do not subtract from container totals (Chegando)
+Computador calcula:
+7. Nome do produto (L)
+8. Qtde. por caixa (n/a)
+9. Sobrando (J)
+10. Nome do cliente (B)
+11. Nome do vendedor (C)
+12. Ver se é possivel calcular Desistencia do Container automaticamente (n/a)
+13. Data criada (I)
+14. Data atualizada (n/a)
 
-Does callback to child_modified provide previous values?
 
-Count total number of line items per container, to verify against physical
-paper copies
+##### Pedido display
 
-nesting line items as children of pedidos complicates aggregating data, beyond
-my experience level right now
+1. Cod. Prod (1)
+2. Qtde desejada (2)
+3. Nome cliente (10)
+4. Nome vend. (11)
+5. Resv. Desist (5)
+6. Obs. (6)
+7. Sobrando (9)
+8. Data criada (13)
 
-find a way to store container number, when changing status to Reserva (add
-callback to child_modified?)
+Mostrar em tooltip ou clicando num toggle link
+(3) Qtde ja reservada
+(4) Cod Cliente
+(7) Nome prod.
+(8) Qtde caixa
+(14) Data atualiz.
 
-Editing a line item should change totals
+### Clientes
 
-autocomplete when entering codigo and clientes name. Entering a number also
-fills in the string, and entering a string fills in the number
+1. Codigo
+2. Nome
+3. Vendedor
 
-clicking on an edit button, icon, or link opens a modal with edit form (and x)
-"On submit" it becomes gray and callback closes it
+### Produtos
 
-aggregate by cliente, produto, vendedor, container
+1. Codigo
+2. Nome
+3. Quantidade por caixa
 
-checkbox to decide if "inactive" line items are included in aggregate lists,
-simply use a ng-show on each element
 
-how to handle multiple chegandos on same item? could tally by codigo and
-concatenate the multiple containers into a string
+### Chegando
 
-line item's container label should be auto-computed
+1. Codigo Produto
+2. Qtde. chegando
+3. Container
 
-for testing, create child from firebaseRef based on user id.
-the test branch is a sibling of banana_store
 
-LineItems table should be sortable by column heading, like tablesorter.
-Double-clicking reverses sort
+# Temporary calculations
 
-Setup user profiles page where user's group is assigned manually by a
-superuser, then use this group information like
-"$group_id": "$group_id == $user_group_id"
-
-count chegando totals summing by codigo, but note which container is assigned
-to a pedido based on order, and based by quantity. For example, if 5000 arrives
-in 1440, then 2000 in 1441, and there is a first pedido of 4000, it gets
-assigned to 1440, but the next pedido would be assigned 1440 AND 1441. To keep
-things simple I might just concatenate all container numbers and display that.
-However, once the container amount is exhausted, later pedidos must become
-"aguardando desistencia do container"
-
-make login tokens last years
-
-# Security rules
-
-```
-{
-    "rules": {
-        ".read": "auth != null && auth.provider == 'password'",
-        ".write": "auth != null && auth.provider == 'password'"
-    }
-}
-```
+1. Wanted = Qtde. desejada - Qtde. ja reservada
+2. Total wanted = sum of all wanted for a codigo
+3. Sobrando = Total Chegando - Total wanted

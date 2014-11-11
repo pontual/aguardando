@@ -1,0 +1,5 @@
+{
+  "rules": {
+    "aguardando": {
+	  ".read": "auth != null && auth.provider == 'password'"
+	  ".write": "root.child('aguardando').child(administradores).child(auth.uid).val() === 1"
