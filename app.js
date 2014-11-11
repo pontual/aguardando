@@ -124,7 +124,7 @@
         nome = nome || "";
         qtdePorCaixa = qtdePorCaixa || 0;
         sobrando = sobrando || 0;
-        chegando = chegando || 0;
+        chegando = chegando || "";
         containers = containers || '';
         
         $scope.produtosSync.$set(codigo.toUpperCase(),
@@ -132,7 +132,7 @@
                                    nome: nome,
                                    qtdePorCaixa: parseInt(qtdePorCaixa),
                                    sobrando: parseInt(sobrando),
-                                   chegando: parseInt(chegando),
+                                   chegando: chegando,
                                    containers: containers,
                                  })                      
           .then(function() { $scope.$broadcast("newProdutoAdded"); })
@@ -471,8 +471,12 @@
         codigo = codigo.toUpperCase();
         var chegandoTotal = 0;
         var containers = [];
+
+        var chegandoSummary = "";
+        
         angular.forEach($scope.chegandos, function(chegando, pushId) {
           if (chegando.codigoProduto === codigo && !chegando.chegou) {
+            chegandoSummary += chegando.quantidade.toString() + " (" + chegando.container + ") ";
             chegandoTotal += parseInt(chegando.quantidade);
             if (containers.indexOf(chegando.container) === -1) {
               containers.push(chegando.container);
@@ -501,8 +505,15 @@
                              $scope.produtosObj[codigo].nome,
                              $scope.produtosObj[codigo].qtdePorCaixa,
                              sobrando,
-                             chegandoTotal,
+                             chegandoSummary,
                              containers);
+      };
+
+      $scope.forceComputeSobrando = function() {
+        angular.forEach($scope.produtos, function(produto, id) {
+          $scope.notification = produto.codigo;
+          $scope.computeSobrandoChegando(produto.codigo);
+        });
       };
 
       // ADICIONAR PRODUTOS EM LOTES

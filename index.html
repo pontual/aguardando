@@ -278,7 +278,7 @@
 			  </span>			  
 			  <span class="td">
 				{{pedido.estado}}
-				<span ng-show="pedido.estado==='Container'">
+				<span ng-show="pedido.estado==='Container'" class="hint--left" data-hint="{{produtosObj[pedido.codigoProduto].chegando}}">
 				  {{produtosObj[pedido.codigoProduto].containers}}
 				</span>
 			  </span>
@@ -547,7 +547,7 @@ END PEDIDOS -->
 			  <span class="td" ng-show="isAdmin" style="border-bottom: none;">&nbsp;</span>
 			  <span class="td" style="border-bottom: none;"><a href ng-click="produtoOrder='sobrando'">Sobrando</a></span>
 			  <span class="td" style="border-bottom: none;"><a href ng-click="produtoOrder='chegando'">Chegando</a></span>
-			  <span class="td" style="border-bottom: none;"><a href ng-click="produtoOrder='containers'">Containers</a></span>
+			  <!-- <span class="td" style="border-bottom: none;"><a href ng-click="produtoOrder='containers'">Containers</a></span> -->
 			</div>
 
 			<!-- Adicionar Produto -->
@@ -569,7 +569,7 @@ END PEDIDOS -->
 			  <span class="td" ng-show="isAdmin">&nbsp;</span>
 			  <span class="td">{{produto.sobrando}}</span>
 			  <span class="td">{{produto.chegando}}</span>
-			  <span class="td">{{produto.containers}}</span>
+			  <!-- <span class="td">{{produto.containers}}</span> -->
 			</div>
 
 		  </div>
@@ -824,8 +824,14 @@ END PEDIDOS -->
 				<input type="submit" />
 			  </form>
 			</pane>
-			-->
+	-->
 
+		<!--
+		<pane heading="FORCE">
+		  <button ng-click="forceComputeSobrando()">Force compute sobrando</button>
+		</pane>
+		-->
+		
 		
 	  </tabs>
 	  
