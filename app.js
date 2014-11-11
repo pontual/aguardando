@@ -197,7 +197,7 @@
         return $scope.clientesObj[pedido.codigoCliente].nome;
       };
 
-      $scope.pedidoTableOrder = ['codigoProduto', $scope.pedidoEstadoOrder, 'dataCriada'];
+      $scope.pedidoTableOrder = ['codigoProduto', $scope.pedidoEstadoOrder, 'dataCriadaNum'];
 
       $scope.pedidoClass = [
         'reservaStyle',
