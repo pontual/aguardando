@@ -177,6 +177,8 @@
       //  .startAt(startTime)
       //  .endAt(endTime)
 
+      $scope.showFiltro = false;
+
       $scope.showAddPedido = false;
 
       $scope.pedidoEstadoOrder = function(pedido) {

@@ -137,7 +137,9 @@
 		  <!-- END PEDIDOS MODAL -->
 
 		  <!-- PEDIDOS FILTRO -->
-		  <div class="table">
+		  <a href ng-hide="showFiltro" ng-click="showFiltro=true">Filtrar pedidos</a>
+
+		  <div class="table" ng-show="showFiltro">
 			<div class="tr">
 			  <span class="td" style="border-bottom: none;">Filtro de produto:</span>
 			  <span class="td" style="border-bottom: none;"><input type="text" ng-model="pedidoFiltroProduto" /></span>
@@ -147,6 +149,7 @@
 			  <span class="td" style="border-bottom: none;"><input type="text" ng-model="pedidoFiltroCliente" /></span>
 			  <span class="td" style="border-bottom: none;"><button ng-click="pedidoFiltroProduto=''; pedidoFiltroCliente='';">limpar</button></span>
 			</div>
+			<a href ng-click="showFiltro=false">Esconder filtros</a>
 		  </div>
 		  <!-- END PEDIDOS FILTRO -->
 		  
