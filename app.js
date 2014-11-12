@@ -183,13 +183,13 @@
 
       $scope.pedidoEstadoOrder = function(pedido) {
         switch (pedido.estado) {
-        case 'Reserva': return "0";
         case 'Desistencia': return "1";
         case 'Container': return "2" + $scope.produtosObj[pedido.codigoProduto].containers;
         case 'Desistencia do Container': return "3";
-        case 'Faturado': return "4";
-        case 'Cancelado': return "5";
-        default: return "6";
+        case 'Reserva': return "4";
+        case 'Faturado': return "5";
+        case 'Cancelado': return "6";
+        default: return "0";
         }
       };
 
