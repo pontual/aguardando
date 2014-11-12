@@ -243,7 +243,7 @@
 				</a>
 			  </span>
 			  <span class="td" style="border-bottom: none;">
-				<a href ng-click="pedidoTableOrder=[pedidoEstadoOrder, 'codigoProduto', pedidoClienteOrder, 'dataCriadaNum']">
+				<a href ng-click="pedidoTableOrder=[pedidoEstadoOrder, 'codigoProduto', 'dataCriadaNum']"> <!-- removed pedidoClienteOrder -->
 				  Estado
 				</a>
 			  </span>
@@ -388,16 +388,34 @@ END PEDIDOS -->
 		  </script>
 		  <!-- END CHEGANDO MODAL TEMPLATE -->
 
+		  <!-- CHEGANDO FILTRO -->
+		  <a href ng-hide="showChegandoFiltro" ng-click="showChegandoFiltro=true">Filtrar chegadas</a>
+
+		  <div class="table" ng-show="showChegandoFiltro">
+			<div class="tr">
+			  <span class="td" style="border-bottom: none;">Filtro de codigo:</span>
+			  <span class="td" style="border-bottom: none;"><input type="text" ng-model="chegandoFiltroCodigo" /></span>
+			</div>
+			<div class="tr">
+			  <span class="td" style="border-bottom: none;">Filtro de container:</span>
+			  <span class="td" style="border-bottom: none;"><input type="text" ng-model="chegandoFiltroContainer" /></span>
+			  <span class="td" style="border-bottom: none;"><button ng-click="chegandoFiltroCodigo=''; chegandoFiltroContainer='';">limpar</button></span>
+			</div>
+			<a href ng-click="showChegandoFiltro=false">Esconder filtros</a>
+		  </div>
+		  <!-- END CHEGANDO FILTRO -->
+
+
 		  <div ng-show="isAdmin">
-			<a href ng-click="showChegandoChegou=true" ng-hide="showChegandoChegou">Container chegou</a>
+			<a href ng-click="showChegandoChegou=true" ng-hide="showChegandoChegou">Anotar que um container chegou</a>
 		  </div>
 
 		  <div ng-show="showChegandoChegou && isAdmin">
 			<form ng-submit="alterarChegandoChegou(chegandoChegouContainer, chegandoChegouEstado)">
-			Container: <input ng-model="chegandoChegouContainer">
-			<select ng-init="chegandoChegouEstado=chegandoChegouOpcoes[0]" ng-model="chegandoChegouEstado" ng-options="chegandoChegouOpcao for chegandoChegouOpcao in chegandoChegouOpcoes">
-			</select>
-			<input type="submit" />
+			  Container: <input ng-model="chegandoChegouContainer">
+			  <select ng-init="chegandoChegouEstado=chegandoChegouOpcoes[0]" ng-model="chegandoChegouEstado" ng-options="chegandoChegouOpcao for chegandoChegouOpcao in chegandoChegouOpcoes">
+			  </select>
+			  <input type="submit" />
 			</form>
 
 			<a href ng-click="showChegandoChegou=false">Esconder</a>
@@ -415,7 +433,13 @@ END PEDIDOS -->
 			  <span class="td" style="border-bottom: none;">Chegou?</span>
 			</div>
 
-			<form class="tr" ng-show="isAdmin" ng-submit="addChegando(chegando_codigoProduto.toUpperCase(), chegando_quantidade, chegando_container); chegando_codigoProduto=''; chegando_quantidade=''; chegando_container=''; ">
+			<div class="tr" ng-hide="showAddChegando">
+			  <span class="td">
+				<a href ng-click="showAddChegando=true"><img src="img/file_add.png" alt="+" /></a>
+			  </span>
+			</div>
+			
+			<form class="tr" ng-show="isAdmin && showAddChegando" ng-submit="addChegando(chegando_codigoProduto.toUpperCase(), chegando_quantidade, chegando_container); chegando_codigoProduto=''; chegando_quantidade=''; chegando_container=''; ">
 			  <span class="td" style="border-bottom: none;" ng-show="isAdmin">&nbsp;</span>
 			  <span class="td" style="border-bottom: none;"><input type="text" class="number" ng-model="chegando_codigoProduto" style="text-transform: uppercase" focus-on="newChegandoAdded" /></span>
 
@@ -436,7 +460,7 @@ END PEDIDOS -->
 			  <span class="td" style="border-bottom: none;"><input type="image" src="img/file_add.png" alt="adicionar" /></span>
 			</form>
 
-			<div class="tr" ng-repeat="chegando in chegandos | orderBy:chegandoTableOrder">
+			<div class="tr" ng-repeat="chegando in chegandos | orderBy:chegandoTableOrder" ng-show="chegandoFiltroCorresponde(chegando.codigoProduto, chegando.container, chegandoFiltroCodigo, chegandoFiltroContainer)">
 			  <span class="td" ng-show="isAdmin"><img src="img/file_edit.png" alt="edit" ng-click="editChegandoOpen(chegando)" /></span>	
 			  <span class="td">{{chegando.codigoProduto}}</span>
 			  <span class="td">{{produtosObj[chegando.codigoProduto].nome}}</span>
@@ -841,13 +865,13 @@ END PEDIDOS -->
 				<input type="submit" />
 			  </form>
 			</pane>
-	-->
+			-->
 
 		<!--
-		<pane heading="FORCE">
-		  <button ng-click="forceComputeSobrando()">Force compute sobrando</button>
-		</pane>
-		-->
+			<pane heading="FORCE">
+			  <button ng-click="forceComputeSobrando()">Force compute sobrando</button>
+			</pane>
+			-->
 		
 		
 	  </tabs>

@@ -403,6 +403,26 @@
         'Sim',
         'Não',
       ];
+
+      $scope.showAddChegando = false;
+      $scope.showChegandoFiltro = false;
+
+      $scope.chegandoFiltroCodigo = "";
+      $scope.chegandoFiltroContainer = "";      
+
+      $scope.chegandoFiltroCorresponde = function(chegandoCodigo, chegandoContainer, buscaCodigo, buscaContainer) {
+        codigoCorresponde = chegandoCodigo.indexOf(buscaCodigo.toUpperCase()) > -1;
+        containerCorresponde = chegandoContainer.indexOf(buscaContainer.toUpperCase()) > -1;
+
+        if (buscaCodigo === '') {
+          codigoCorresponde = true;
+        }
+
+        if (buscaContainer === '') {
+          containerCorresponde = true;
+        }
+        return codigoCorresponde && containerCorresponde;
+      };
       
       $scope.addChegando = function(chegando_codigoProduto, quantidade, container) {
         quantidade = quantidade || 0;
