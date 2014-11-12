@@ -386,6 +386,20 @@ END PEDIDOS -->
 			</form>
 		  </script>
 		  <!-- END CHEGANDO MODAL TEMPLATE -->
+
+		  <a href ng-click="showChegandoChegou=true" ng-hide="showChegandoChegou">Container chegou</a>
+
+		  <div ng-show="showChegandoChegou && isAdmin">
+			<form ng-submit="alterarChegandoChegou(chegandoChegouContainer, chegandoChegouEstado)">
+			Container: <input ng-model="chegandoChegouContainer">
+			<select ng-init="chegandoChegouEstado=chegandoChegouOpcoes[0]" ng-model="chegandoChegouEstado" ng-options="chegandoChegouOpcao for chegandoChegouOpcao in chegandoChegouOpcoes">
+			</select>
+			<input type="submit" />
+			</form>
+
+			<a href ng-click="showChegandoChegou=false">Esconder</a>
+		  </div>
+		  
 		  
 		  <div class="table">
 			<div class="tr">

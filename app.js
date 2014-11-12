@@ -388,11 +388,18 @@
 
 
       // CHEGANDO
+      $scope.showChegandoChegou = false;
+      
       var chegandosRef = ref.child("chegandos");
       $scope.chegandosSync = $firebase(chegandosRef);
       $scope.chegandos = $scope.chegandosSync.$asArray();
 
       $scope.chegandoTableOrder = ['codigoProduto', 'container'];
+
+      $scope.chegandoChegouOpcoes = [
+        'Sim',
+        'Não',
+      ];
       
       $scope.addChegando = function(chegando_codigoProduto, quantidade, container) {
         quantidade = quantidade || 0;
@@ -406,6 +413,22 @@
           .then(function() { $scope.computeSobrandoChegando(chegando_codigoProduto); })
           .then(function() { $scope.notification = "Adicionado chegando " + quantidade + " pçs " + chegando_codigoProduto; })
           .then(function() { $scope.$broadcast("newChegandoAdded"); });
+      };
+
+      $scope.alterarChegandoChegou = function(container, estado) {
+        var novoEstado = false;
+        if (estado === "Sim") {
+          novoEstado = true;
+        }
+
+        angular.forEach($scope.chegandos, function(chegando, pushId) {
+          if (chegando.container === container) {
+            chegando.chegou = novoEstado;
+          }
+          $scope.chegandos.$save(chegando)
+            .then(function() { $scope.computeSobrandoChegando(chegando.codigoProduto.toUpperCase()); })
+            .then(function() { $scope.notification = "Alterado container chegou " + chegando.codigoProduto + " " + chegando.container; });
+        });
       };
 
       $scope.editChegandoOpen = function(chegando) {
