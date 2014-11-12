@@ -201,12 +201,12 @@
 
       $scope.pedidoClass = function(estado) {
         switch (estado[0]) {
-        case "0": return 'reservaStyle';
         case "1": return 'desistenciaStyle';
         case "2": return 'containerStyle';
         case "3": return 'desistenciaDoContainerStyle';
-        case "4": return 'faturadoStyle';
-        case "5": return 'canceladoStyle';
+        case "4": return 'reservaStyle';
+        case "5": return 'faturadoStyle';
+        case "6": return 'canceladoStyle';
         default: return '';
         }
       };
