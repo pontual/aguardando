@@ -12,7 +12,9 @@
 
   app.controller("LoginController", ['$scope', '$firebase', function($scope, $firebase) {
     $scope.firebaseLogin = function(userEmail, userPassword) {
-      formSetEditable(false);
+      if ($scope.userEmail.length > 0 && $scope.userPassword.length > 0) {
+        formSetEditable(false);
+      }
       ref.authWithPassword({
         email: $scope.userEmail,
         password: $scope.userPassword,
