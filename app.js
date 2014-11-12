@@ -427,10 +427,10 @@
         angular.forEach($scope.chegandos, function(chegando, pushId) {
           if (chegando.container === container) {
             chegando.chegou = novoEstado;
+            $scope.chegandos.$save(chegando)
+              .then(function() { $scope.computeSobrandoChegando(chegando.codigoProduto.toUpperCase()); })
+              .then(function() { $scope.notification = "Alterado container chegou " + chegando.codigoProduto + " " + chegando.container; });
           }
-          $scope.chegandos.$save(chegando)
-            .then(function() { $scope.computeSobrandoChegando(chegando.codigoProduto.toUpperCase()); })
-            .then(function() { $scope.notification = "Alterado container chegou " + chegando.codigoProduto + " " + chegando.container; });
         });
       };
 
@@ -500,7 +500,7 @@
 
         var chegandoSummary = "";
 
-        angular.forEach($scope.chegandos.sort(function(a, b) { if (a.container > b.container) { return 1; } }), function(chegando, pushId) {
+        angular.forEach($scope.chegandos.sort(function(a, b) { if (a.container > b.container) { return 1; } else if (a.container < b.container) { return -1; } else { return 0; } }), function(chegando, pushId) {
           if (chegando.codigoProduto === codigo && !chegando.chegou) {
             chegandoSummary += chegando.quantidade.toString() + " (" + chegando.container + ") ";
             chegandoTotal += parseInt(chegando.quantidade);

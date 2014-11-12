@@ -387,7 +387,9 @@ END PEDIDOS -->
 		  </script>
 		  <!-- END CHEGANDO MODAL TEMPLATE -->
 
-		  <a href ng-click="showChegandoChegou=true" ng-hide="showChegandoChegou">Container chegou</a>
+		  <div ng-show="isAdmin">
+			<a href ng-click="showChegandoChegou=true" ng-hide="showChegandoChegou">Container chegou</a>
+		  </div>
 
 		  <div ng-show="showChegandoChegou && isAdmin">
 			<form ng-submit="alterarChegandoChegou(chegandoChegouContainer, chegandoChegouEstado)">
