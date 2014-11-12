@@ -242,12 +242,12 @@
       // CALENDAR
       $scope.today = function() {
         $scope.pedido_dataCriada = moment().format("D/M/YY");
-        $scope.pedido_horaCriada = moment().format("H:mm");
+        $scope.pedido_horaCriada = moment().format("H:mm:ss");
       };
       $scope.today();
 
       $scope.horaNow = function() {
-        return moment().format("H:mm");
+        return moment().format("H:mm:ss");
       };
       
       $scope.open = function($event) {
@@ -266,7 +266,7 @@
 
       // MOMENT.JS
       $scope.getms = function(s) {
-        var m = moment(s, "D/M/YY H:mm");
+        var m = moment(s, "D/M/YY H:mm:ss");
         var result = m.valueOf();
         if (isNaN(result)) {
           result = 0;
@@ -275,7 +275,7 @@
       };
 
       $scope.getFormattedDate = function(ms) {
-        var result = moment(ms).locale('pt-BR').format('ddd D-MMM-YY H:mm');
+        var result = moment(ms).locale('pt-BR').format('ddd D-MMM-YY H:mm:ss');
         if (result === 'Invalid date') {
           result = 'data invalida';
         }
