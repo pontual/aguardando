@@ -183,13 +183,13 @@
 
       $scope.pedidoEstadoOrder = function(pedido) {
         switch (pedido.estado) {
-        case 'Reserva': return 0;
-        case 'Desistencia': return 1;
-        case 'Container': return 2;
-        case 'Desistencia do Container': return 3;
-        case 'Faturado': return 4;
-        case 'Cancelado': return 5;
-        default: return 6;
+        case 'Reserva': return "0";
+        case 'Desistencia': return "1";
+        case 'Container': return "2" + $scope.produtosObj[pedido.codigoProduto].containers;
+        case 'Desistencia do Container': return "3";
+        case 'Faturado': return "4";
+        case 'Cancelado': return "5";
+        default: return "6";
         }
       };
 
@@ -199,14 +199,17 @@
 
       $scope.pedidoTableOrder = ['codigoProduto', $scope.pedidoEstadoOrder, 'dataCriadaNum'];
 
-      $scope.pedidoClass = [
-        'reservaStyle',
-        'desistenciaStyle',
-        'containerStyle',
-        'desistenciaDoContainerStyle',
-        'faturadoStyle',
-        'canceladoStyle',
-      ];
+      $scope.pedidoClass = function(estado) {
+        switch (estado[0]) {
+        case "0": return 'reservaStyle';
+        case "1": return 'desistenciaStyle';
+        case "2": return 'containerStyle';
+        case "3": return 'desistenciaDoContainerStyle';
+        case "4": return 'faturadoStyle';
+        case "5": return 'canceladoStyle';
+        default: return '';
+        }
+      };
 
       $scope.pedidoEstadoOpcoes = [
         'Desistencia',
@@ -496,8 +499,8 @@
         var containers = [];
 
         var chegandoSummary = "";
-        
-        angular.forEach($scope.chegandos, function(chegando, pushId) {
+
+        angular.forEach($scope.chegandos.sort(function(a, b) { if (a.container > b.container) { return 1; } }), function(chegando, pushId) {
           if (chegando.codigoProduto === codigo && !chegando.chegou) {
             chegandoSummary += chegando.quantidade.toString() + " (" + chegando.container + ") ";
             chegandoTotal += parseInt(chegando.quantidade);
