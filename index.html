@@ -68,7 +68,7 @@
 
 				<div class="tr">
 				  <span class="td"><input type="text" class="number" ng-model="selected.pedido.qtdePedida" /></span>
-				  <span class="td"><input type="text" class="number" ng-model="selected.pedido.qtdeJaSeparada" ng-init="selected.pedido.qtdeJaSeparada=0" /></span>
+				  <span class="td"><input type="text" class="number" ng-model="selected.pedido.qtdeJaSeparada" /></span>
 				  <span class="td">&nbsp;</span>
 				</div>
 				
@@ -177,7 +177,7 @@
 				  </span>
 				  <span class="td" style="border-bottom: none;">{{produtosObj[pedido_codigoProduto.toUpperCase()].qtdePorCaixa}}</span>
 				  <span class="td" style="border-bottom: none;"><input type="text" class="number" ng-model="pedido_qtdePedida" /></span>
-				  <span class="td" style="border-bottom: none;"><input type="text" class="number" ng-model="pedido_qtdeJaSeparada" /></span>
+				  <span class="td" style="border-bottom: none;"><input type="text" class="number" ng-model="pedido_qtdeJaSeparada" ng-init="pedido_qtdeJaSeparada=0" /></span>
 				</div>
 				<div class="tr">
 				  <span class="td" style="border-bottom: none;">Cód.Cliente</span>
