@@ -272,7 +272,7 @@
 			<div ng-repeat="pedido in pedidos | orderBy:pedidoTableOrder" ng-class="['tr', pedidoClass(pedidoEstadoOrder(pedido)), 'data']" ng-show="pedidoFiltroCorresponde(pedido.codigoProduto, clientesObj[pedido.codigoCliente].nome, pedidoFiltroProduto, pedidoFiltroCliente)">
 			  <span class="td" ng-show="isAdmin"><img src="img/file_edit.png" alt="edit" ng-click="editPedidoOpen(pedido)" /></span>	
 			  <span class="td hint--no-animate" data-hint="{{produtosObj[pedido.codigoProduto.toUpperCase()].nome}}">{{pedido.codigoProduto}}</span>
-			  <span class="td hint--no-animate" data-hint="Sobram {{produtosObj[pedido.codigoProduto].sobrando}}">{{pedido.qtdePedida}}</span>
+			  <span class="td hint--no-animate" data-hint="Sobram {{produtosObj[pedido.codigoProduto].sobrando}} (verif. o primeiro container se vem vários)">{{pedido.qtdePedida}}</span>
 			  <span class="td">{{pedido.qtdeJaSeparada}}</span>
 			  <span class="td hint--no-animate" data-hint="{{vendedoresObj[clientesObj[pedido.codigoCliente].idVendedor].nome}} ({{clientesObj[pedido.codigoCliente].codigo}})">
 				{{clientesObj[pedido.codigoCliente].nome}}
