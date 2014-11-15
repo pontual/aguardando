@@ -137,7 +137,8 @@
                                    containers: containers,
                                  })                      
           .then(function() { $scope.$broadcast("newProdutoAdded"); })
-          .then(function() { $scope.notification = "Updated produto " + codigo; });
+          .then(function() { $scope.notification = "Updated produto " + codigo;
+                             console.log("updated produto " + codigo); });
       };
 
       $scope.editProdutoOpen = function(produto) {
@@ -227,6 +228,8 @@
       $scope.pedidoFiltroContainer = "";
 
       $scope.pedidoFiltroCorresponde = function(pedidoCodigoProduto, pedidoNomeCliente, pedidoContainer, buscaCodigoProduto, buscaCodigoCliente, buscaContainer, pedidoEstado) {
+        pedidoNomeCliente = pedidoNomeCliente || "";
+        
         produtoCorresponde = pedidoCodigoProduto.indexOf(buscaCodigoProduto.toUpperCase()) > -1;
 
         clienteCorresponde = (pedidoNomeCliente.toLowerCase()).indexOf(buscaCodigoCliente.toLowerCase()) > -1;
@@ -573,16 +576,16 @@
       // CALCULACOES
 
       var containerSort = function(chegandoA, chegandoB) {
-        if ($scope.containers[chegandoA.container] === undefined) {
+        if ($scope.containersObj[chegandoA.container] === undefined) {
           dateNumA = 1577898000000;
         } else {
-          dateNumA = $scope.containers[chegandoA.container].dataPrevisaoNum;
+          dateNumA = $scope.containersObj[chegandoA.container].dataPrevisaoNum;
         }
           
-        if ($scope.containers[chegandoB.container] === undefined) {
+        if ($scope.containersObj[chegandoB.container] === undefined) {
           dateNumB = 1577898000000;
         } else {
-          dateNumB = $scope.containers[chegandoB.container].dataPrevisaoNum;
+          dateNumB = $scope.containersObj[chegandoB.container].dataPrevisaoNum;
         }
 
         if (dateNumA > dateNumB) {
@@ -599,6 +602,7 @@
           }
         }
 
+        console.log("container sort: no match");
         return 0;
       };
 
@@ -611,7 +615,7 @@
       }
 
       var subtractFromChegandos = function(chegandos, amount) {
-        var result = chegandos.slice(0);
+        var result = chegandos.slice();
         for (var i = 0; i < chegandos.length-1; i++) {
           var toSubtract = Math.min(amount, result[i]);
           result[i] -= toSubtract;
@@ -630,8 +634,15 @@
 
         var chegandoSummary = "";
 
-        angular.forEach($scope.chegandos.sort(containerSort), function(chegando, pushId) {
-          if (chegando.codigoProduto === codigo && !chegando.chegou) {
+        var local_chegandos = $scope.chegandos.slice();
+        
+        angular.forEach(local_chegandos.sort(containerSort), function(chegando, pushId) {
+          var chegando_container_chegou = false;
+          if ($scope.containersObj[chegando.container] !== undefined) {
+            chegando_container_chegou = $scope.containersObj[chegando.container].chegou;
+          }
+          
+          if (chegando.codigoProduto === codigo && !chegando_container_chegou) {
             chegandoSummary += chegando.quantidade.toString() + " (" + chegando.container + ") ";
             
             chegandoTotal += parseInt(chegando.quantidade);
@@ -668,9 +679,17 @@
           sobrandoSummary += chegandoPorContainer[i] + " (" + containerLabels[i] + ") ";
         }
 
+        var redo_produtoNome = "";
+        var redo_produtoQtdePorCaixa = 0;
+        
+        if ($scope.produtosObj[codigo] !== undefined) {
+          redo_produtoNome = $scope.produtosObj[codigo].nome;
+          redo_produtoQtdePorCaixa = $scope.produtosObj[codigo].qtdePorCaixa;
+        }
+        
         $scope.updateProduto(codigo,
-                             $scope.produtosObj[codigo].nome,
-                             $scope.produtosObj[codigo].qtdePorCaixa,
+                             redo_produtoNome,
+                             redo_produtoQtdePorCaixa,
                              sobrandoSummary,
                              chegandoSummary,
                              containers);
