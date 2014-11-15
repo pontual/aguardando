@@ -9,7 +9,7 @@
       elements[i].disabled = !state;
     }
   }
-    
+  
   app.controller("OrganizationController", ['$scope', '$firebase', '$modal', function($scope, $firebase, $modal) {
     function init(authData) {
       $scope.loginStatus = "Login válido até " + (new Date(authData.expires * 1000));
@@ -43,7 +43,8 @@
       $scope.computed = $scope.computedSync.$asObject();
 
       // END CALCULACOES
-
+      
+      
       // CLIENTES
       var clientesRef = ref.child("clientes");
       $scope.clientesSync = $firebase(clientesRef);
@@ -111,7 +112,7 @@
                                  { codigo: codigo.toUpperCase(),
                                    nome: nome,
                                    qtdePorCaixa: parseInt(qtdePorCaixa),
-                                   sobrando: parseInt(sobrando),
+                                   sobrando: sobrando,
                                    chegando: parseInt(chegando),
                                    containers: containers,
                                  })                      
@@ -131,11 +132,12 @@
                                  { codigo: codigo.toUpperCase(),
                                    nome: nome,
                                    qtdePorCaixa: parseInt(qtdePorCaixa),
-                                   sobrando: parseInt(sobrando),
+                                   sobrando: sobrando,
                                    chegando: chegando,
                                    containers: containers,
                                  })                      
           .then(function() { $scope.$broadcast("newProdutoAdded"); })
+          .then(function() { $scope.notification = "Updated produto " + codigo; });
       };
 
       $scope.editProdutoOpen = function(produto) {
@@ -278,6 +280,9 @@
         var result = moment(ms).locale('pt-BR').format('ddd D-MMM-YY H:mm:ss');
         if (result === 'Invalid date') {
           result = 'data invalida';
+        }
+        if (ms === undefined) {
+          result = "";
         }
         return result;
       };
@@ -483,6 +488,52 @@
       
       // END CHEGANDO
       
+      // CONTAINERS
+      var containersRef = ref.child("containers");
+      $scope.containersSync = $firebase(containersRef);
+      $scope.containersObj = $scope.containersSync.$asObject();
+      $scope.containers = $scope.containersSync.$asArray();
+      $scope.containerOrder = "nome";
+
+      $scope.setContainer = function(numero, data, hora, chegou) {
+        $scope.containersSync.$set(numero, {
+          numero: numero,
+          dataPrevisao: data,
+          horaPrevisao: hora,
+          dataPrevisaoNum: $scope.getms(data + " " + hora),
+          chegou: chegou,
+        })
+          .then(function() { $scope.computeContainerSobrando(numero) });
+      };
+
+      $scope.editContainerOpen = function(container) {
+        var modalInstance = $modal.open({
+          templateUrl: 'myContainerModalContent.html',
+          controller: 'EditContainerModalCtrl',
+          size: 'lg',
+          resolve: {
+            numero: function() {
+              return container.numero;
+            },
+            dataPrevisao: function() {
+              return container.dataPrevisao;
+            },
+            horaPrevisao: function() {
+              return container.horaPrevisao;
+            },
+            chegou: function() {
+              return container.chegou;
+            },
+          }
+        });
+
+        modalInstance.result.then(function(selected) {
+          $scope.setContainer(container.numero, selected.dataPrevisao, selected.horaPrevisao, selected.chegou);
+        }, function() {
+          // do nothing
+        });
+      };  // END CONTAINERS
+
       
       // VENDEDORES
       var vendedoresRef = ref.child("vendedores");
@@ -513,6 +564,112 @@
       };
 
       // CALCULACOES
+
+      var containerSort = function(chegandoA, chegandoB) {
+        if ($scope.containers[chegandoA.container] === undefined) {
+          dateNumA = 1577898000000;
+        } else {
+          dateNumA = $scope.containers[chegandoA.container].dataPrevisaoNum;
+        }
+          
+        if ($scope.containers[chegandoB.container] === undefined) {
+          dateNumB = 1577898000000;
+        } else {
+          dateNumB = $scope.containers[chegandoB.container].dataPrevisaoNum;
+        }
+
+        if (dateNumA > dateNumB) {
+          return 1;
+        } else if (dateNumB > dateNumA) {
+          return -1;
+        } else {
+          if (chegandoA.container > chegandoB.container) {
+            return 1;
+          } else if (chegandoB.container > chegandoA.container) {
+            return -1;
+          } else {
+            return 0;
+          }
+        }
+
+        return 0;
+      };
+
+      var sumChegandos = function(chegandos) {
+        var total = 0;
+        for (var i = 0; i < chegandos.length; i++) {
+          total += chegandos[i];
+        }
+        return total;
+      }
+
+      var subtractFromChegandos = function(chegandos, amount) {
+        var result = chegandos.slice(0);
+        for (var i = 0; i < chegandos.length-1; i++) {
+          var toSubtract = Math.min(amount, result[i]);
+          result[i] -= toSubtract;
+          amount -= toSubtract;
+        }
+        result[chegandos.length-1] -= amount;
+        return result;
+      }
+      
+      $scope.computeSobrandoChegando = function(codigo) {
+        codigo = codigo.toUpperCase();
+        var chegandoTotal = 0;
+        var containers = [];
+        var containerLabels = [];
+        var chegandoPorContainer = [];
+
+        var chegandoSummary = "";
+
+        angular.forEach($scope.chegandos.sort(containerSort), function(chegando, pushId) {
+          if (chegando.codigoProduto === codigo && !chegando.chegou) {
+            chegandoSummary += chegando.quantidade.toString() + " (" + chegando.container + ") ";
+            
+            chegandoTotal += parseInt(chegando.quantidade);
+            containers.push(chegando.container);
+            chegandoPorContainer.push(chegando.quantidade);
+            containerLabels.push(chegando.container);
+          }
+        });
+        if (isNaN(chegandoTotal)) {
+          chegandoTotal = 0;
+        }
+
+        containers = containers.sort().join(", ");
+
+        // var sobrando = chegandoTotal;
+        var totalPedidos = 0;
+
+        angular.forEach($scope.pedidos, function(pedido, pushId) {
+          if (pedido.codigoProduto.toUpperCase() === codigo && pedido.estado === 'Container') {
+            // sobrando -= (pedido.qtdePedida - pedido.qtdeJaSeparada);
+            totalPedidos += (pedido.qtdePedida - pedido.qtdeJaSeparada);
+          }
+        });
+
+        chegandoPorContainer = subtractFromChegandos(chegandoPorContainer, totalPedidos);
+        
+        // if (sobrando < 0) {
+        // sobrando = 0;
+        // }
+
+        var sobrandoSummary = "";
+
+        for (var i = 0; i < chegandoPorContainer.length; i++) {
+          sobrandoSummary += chegandoPorContainer[i] + " (" + containerLabels[i] + ") ";
+        }
+
+        $scope.updateProduto(codigo,
+                             $scope.produtosObj[codigo].nome,
+                             $scope.produtosObj[codigo].qtdePorCaixa,
+                             sobrandoSummary,
+                             chegandoSummary,
+                             containers);
+      };
+
+      /*
       $scope.computeSobrandoChegando = function(codigo) {
         codigo = codigo.toUpperCase();
         var chegandoTotal = 0;
@@ -554,11 +711,20 @@
                              chegandoSummary,
                              containers);
       };
-
+      */
+      
       $scope.forceComputeSobrando = function() {
         angular.forEach($scope.produtos, function(produto, id) {
           $scope.notification = produto.codigo;
           $scope.computeSobrandoChegando(produto.codigo);
+        });
+      };
+
+      $scope.computeContainerSobrando = function(numero) {
+        angular.forEach($scope.chegandos, function(chegando, id) {
+          if (chegando.container === numero) {
+            $scope.computeSobrandoChegando(chegando.codigoProduto);
+          }
         });
       };
 
@@ -617,6 +783,22 @@
     };
   });  // END EDIT CLIENTE MODAL
 
+  app.controller('EditContainerModalCtrl', function($scope, $modalInstance, numero, dataPrevisao, horaPrevisao, chegou) {
+    $scope.selected = {
+      numero: numero,
+      dataPrevisao: dataPrevisao,
+      horaPrevisao: horaPrevisao,
+      chegou: chegou,
+    };
+    $scope.ok = function() {
+      $modalInstance.close($scope.selected);
+    };
+    $scope.cancel = function() {
+      $modalInstance.dismiss('Cancelar');
+    };
+  });  // END EDIT CONTAINER MODAL
+
+  
   app.controller('EditProdutoModalCtrl', function($scope, $modalInstance, items, produtoNome, codigo, produtoQtdePorCaixa) {
     $scope.items = items;
     $scope.selected = {

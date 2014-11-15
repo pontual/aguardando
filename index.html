@@ -272,7 +272,7 @@
 			<div ng-repeat="pedido in pedidos | orderBy:pedidoTableOrder" ng-class="['tr', pedidoClass(pedidoEstadoOrder(pedido)), 'data']" ng-show="pedidoFiltroCorresponde(pedido.codigoProduto, clientesObj[pedido.codigoCliente].nome, pedidoFiltroProduto, pedidoFiltroCliente)">
 			  <span class="td" ng-show="isAdmin"><img src="img/file_edit.png" alt="edit" ng-click="editPedidoOpen(pedido)" /></span>	
 			  <span class="td hint--no-animate" data-hint="{{produtosObj[pedido.codigoProduto.toUpperCase()].nome}}">{{pedido.codigoProduto}}</span>
-			  <span class="td hint--no-animate" data-hint="Sobram {{produtosObj[pedido.codigoProduto].sobrando}} (verif. o primeiro container se vem vários)">{{pedido.qtdePedida}}</span>
+			  <span class="td hint--no-animate" data-hint="Sobram {{produtosObj[pedido.codigoProduto].sobrando}}">{{pedido.qtdePedida}}</span>
 			  <span class="td">{{pedido.qtdeJaSeparada}}</span>
 			  <span class="td hint--no-animate" data-hint="{{vendedoresObj[clientesObj[pedido.codigoCliente].idVendedor].nome}} ({{clientesObj[pedido.codigoCliente].codigo}})">
 				{{clientesObj[pedido.codigoCliente].nome}}
@@ -406,20 +406,22 @@ END PEDIDOS -->
 		  <!-- END CHEGANDO FILTRO -->
 
 
-		  <div ng-show="isAdmin">
-			<a href ng-click="showChegandoChegou=true" ng-hide="showChegandoChegou">Anotar que um container chegou</a>
-		  </div>
+		  <!--
+			  <div ng-show="isAdmin">
+				<a href ng-click="showChegandoChegou=true" ng-hide="showChegandoChegou">Anotar que um container chegou</a>
+			  </div>
 
-		  <div ng-show="showChegandoChegou && isAdmin">
-			<form ng-submit="alterarChegandoChegou(chegandoChegouContainer, chegandoChegouEstado)">
-			  Container: <input ng-model="chegandoChegouContainer">
-			  <select ng-init="chegandoChegouEstado=chegandoChegouOpcoes[0]" ng-model="chegandoChegouEstado" ng-options="chegandoChegouOpcao for chegandoChegouOpcao in chegandoChegouOpcoes">
-			  </select>
-			  <input type="submit" />
-			</form>
+			  <div ng-show="showChegandoChegou && isAdmin">
+				<form ng-submit="alterarChegandoChegou(chegandoChegouContainer, chegandoChegouEstado)">
+				  Container: <input ng-model="chegandoChegouContainer">
+				  <select ng-init="chegandoChegouEstado=chegandoChegouOpcoes[0]" ng-model="chegandoChegouEstado" ng-options="chegandoChegouOpcao for chegandoChegouOpcao in chegandoChegouOpcoes">
+				  </select>
+				  <input type="submit" />
+				</form>
 
-			<a href ng-click="showChegandoChegou=false">Esconder</a>
-		  </div>
+				<a href ng-click="showChegandoChegou=false">Esconder</a>
+			  </div>
+			  -->
 		  
 		  
 		  <div class="table">
@@ -430,6 +432,7 @@ END PEDIDOS -->
 			  <span class="td" style="border-bottom: none;">Qtde. cx.</span>
 			  <span class="td" style="border-bottom: none;">Qtde. chegando</span>
 			  <span class="td" style="border-bottom: none;"><a href ng-click="chegandoTableOrder=['container','codigoProduto']">Container</a></span>
+			  <span class="td" style="border-bottom: none;">Previsao</span>
 			  <span class="td" style="border-bottom: none;">Chegou?</span>
 			</div>
 
@@ -456,7 +459,13 @@ END PEDIDOS -->
 			  <span class="td" style="border-bottom: none;">{{produtosObj[chegando_codigoProduto.toUpperCase()].qtdePorCaixa}}</span>
 			  <span class="td" style="border-bottom: none;"><input type="text" class="number" ng-model="chegando_quantidade" /></span>
 			  <span class="td" style="border-bottom: none;"><input type="text" class="number" ng-model="chegando_container" /></span>
-			  <span class="td" style="border-bottom: none;">&nbsp;</span>
+			  <span class="td" style="border-bottom: none;">
+				{{getFormattedDate(containersObj[chegando_container].dataPrevisaoNum)}}
+				<span class="td" style="border-bottom: none;" ng-show="chegando_container.length > 0 && isAdmin && containersObj[chegando_container].numero === undefined"><a href ng-click="editProdutoOpen({ codigo: pedido_codigoProduto, produtoNome: '', qtdePorCaixa: '' })"><img src="img/file_add.png" alt="+" /> adicionar novo</a></span>
+			  </span>
+			  <span class="td" style="border-bottom: none;">{{containersObj[chegando_container].chegou}}</span>
+			  
+
 			  <span class="td" style="border-bottom: none;"><input type="image" src="img/file_add.png" alt="adicionar" /></span>
 			</form>
 
@@ -467,11 +476,81 @@ END PEDIDOS -->
 			  <span class="td">{{produtosObj[chegando.codigoProduto].qtdePorCaixa}}</span>
 			  <span class="td">{{chegando.quantidade}}</span>
 			  <span class="td">{{chegando.container}}</span>
-			  <span class="td"><span ng-show="chegando.chegou">Sim</span></span>
+			  <span class="td">{{getFormattedDate(containersObj[chegando.container].dataPrevisaoNum)}}</span>
+			  <span class="td"><span ng-show="containersObj[chegando.container].chegou">Sim</span></span>
 			</div>
 		  </div>
 		</pane>
 
+
+		<!-- CONTAINERS -->
+		<pane heading="Containers">
+		  <!-- CONTAINER MODAL TEMPLATE -->
+		  <script type="text/ng-template" id="myContainerModalContent.html">
+			<form>
+			  <div class="modal-body table">
+				<div class="tr">
+				  <span class="td">Numero</span>
+				  <span class="td">Data previsao</span>
+				  <span class="td">Hora previsao</span>
+				  <span class="td">Chegou?</span>
+				</div>
+				
+				<div class="tr">
+				  <span class="td">
+					{{selected.numero}}
+				  </span>
+				  <span class="td">
+					<input type="text" class="string" ng-model="selected.dataPrevisao" autofocus="autofocus" />
+				  </span>
+				  <span class="td">
+					<input type="text" class="string" ng-model="selected.horaPrevisao" />
+				  </span>
+				  <span class="td">
+					<input type="checkbox" ng-model="selected.chegou">
+				  </span>
+				</div>
+			  </div>
+			  
+			  <div class="modal-footer">
+				<input type="submit" ng-click="ok()" value="OK" />
+				<button type="button" ng-click="cancel()">cancelar</button>
+			  </div>
+			</form>			
+		  </script>
+		  <!-- END CONTAINER MODAL TEMPLATE -->
+
+		  <div class="table">
+			<div class="tr">
+			  <span	class="td" ng-show="isAdmin" style="border-bottom: none;">&nbsp;</span>
+			  <span class="td" style="border-bottom: none;"><a href ng-click="containerOrder='numero'">Numero</a></span>
+			  <span class="td" style="border-bottom: none;"><a href ng-click="containerOrder='dataPrevisaoNum'">Data/Hora Previsao</a></span>
+			  <span class="td" style="border-bottom: none;"><a href ng-click="containerOrder='chegou'">Chegou?</a></span>
+			</div>
+
+			<!-- Adicionar Container -->
+			<form class="tr" ng-show="isAdmin" ng-submit="setContainer(numeroContainer, dataPrevisaoContainer, horaPrevisaoContainer, false); numeroContainer=''; dataPrevisaoContainer=''; horaPrevisaoContainer='';">
+			  <span class="td">&nbsp;</span>
+			  <span class="td"><input type="text" class="number" ng-model="numeroContainer" focus-on="newContainerAdded" /></span>
+			  <span class="td"><input type="text" class="number" ng-model="dataPrevisaoContainer" /><input type="text" class="number" ng-model="horaPrevisaoContainer" /></span>
+			  <span class="td">
+				&nbsp;
+			  </span>		  
+			  <span class="td" style="border-bottom: none;"><input type="image" src="img/file_add.png" alt="adicionar" /></span>
+			</form>
+
+			<!-- Display Container -->
+			<div class="tr" ng-repeat="container in containers | orderBy:[containerOrder]">
+			  <span class="td" ng-show="isAdmin"><img src="img/file_edit.png" ng-click="editContainerOpen(container)" /></span>
+			  <span class="td">{{container.numero}}</span>
+			  <span class="td">{{getFormattedDate(container.dataPrevisaoNum)}}</span>
+			  <span class="td">{{container.chegou}}</span>
+			</div>
+		  </div>
+
+		</pane>
+		<!-- END CONTAINERS -->
+		
 		<!-- CLIENTES -->
 		<pane heading="Clientes">
 
@@ -865,13 +944,14 @@ END PEDIDOS -->
 				<input type="submit" />
 			  </form>
 			</pane>
-			-->
 
-		<!--
 			<pane heading="FORCE">
 			  <button ng-click="forceComputeSobrando()">Force compute sobrando</button>
 			</pane>
 			-->
+
+
+
 		
 		
 	  </tabs>
