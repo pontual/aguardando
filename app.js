@@ -224,11 +224,14 @@
 
       $scope.pedidoFiltroProduto = "";
       $scope.pedidoFiltroCliente = "";
+      $scope.pedidoFiltroContainer = "";
 
-      $scope.pedidoFiltroCorresponde = function(pedidoCodigoProduto, pedidoNomeCliente, buscaCodigoProduto, buscaCodigoCliente) {
+      $scope.pedidoFiltroCorresponde = function(pedidoCodigoProduto, pedidoNomeCliente, pedidoContainer, buscaCodigoProduto, buscaCodigoCliente, buscaContainer, pedidoEstado) {
         produtoCorresponde = pedidoCodigoProduto.indexOf(buscaCodigoProduto.toUpperCase()) > -1;
 
         clienteCorresponde = (pedidoNomeCliente.toLowerCase()).indexOf(buscaCodigoCliente.toLowerCase()) > -1;
+
+        containerCorresponde = pedidoContainer.indexOf(buscaContainer) > -1 && pedidoEstado === 'Container';
 
         if (buscaCodigoProduto === '') {
           produtoCorresponde = true;
@@ -238,7 +241,11 @@
           clienteCorresponde = true;
         }
         
-        return produtoCorresponde && clienteCorresponde;
+        if (buscaContainer === '') {
+          containerCorresponde = true;
+        }
+        
+        return produtoCorresponde && clienteCorresponde && containerCorresponde;
       };
 
       // CALENDAR
