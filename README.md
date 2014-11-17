@@ -20,6 +20,30 @@ obs
 
 # Interface
 
+### Pedidos View Columns
+
+* always show
+
+Categories
+Produto + obs + data
+Cliente
+Container
+
+Cod. Prod. *
+Nome. Prod.
+Qtde. *
+Ja Sep.
+Qtde cx.
+Cod. Cli
+Nome Cli. *
+Vend.
+Estado *
+Sobrando
+Chegando
+Previsao
+Obs.
+Data
+
 ### Pedido
 
 Operador digita:

@@ -35,37 +35,37 @@
 		-->
 
 	  <tabs>
-		<pane heading="New View">
+		<pane heading="Tabela pedidos">
 
-		  <!-- RENAME VARIABLES FOR USE IN NEW VIEW -->
-		  <!-- PEDIDOS FILTRO -->
-		  <!--
-		  <a href ng-hide="showFiltro" ng-click="showFiltro=true">Filtrar pedidos</a>
+		  <div style="background: white; position: fixed; z-index: 2;" class="table">
+			<div class="tr">
+			  <button ng-click="pedidoViewFiltroProduto=''; pedidoViewFiltroCliente=''; pedidoViewFiltroContainer='';">Limpar filtros</button>
+			  <input type="text" class="number" ng-model="pedidoViewFiltroProduto" />
+			  <b>Produto</b>
+			  nome <input type="checkbox" ng-model="pedidoViewShowProdutoNome">
+			  / já separada <input type="checkbox" ng-model="pedidoViewShowProdutoJaSep">
+			  / qtde. caixa <input type="checkbox" ng-model="pedidoViewShowProdutoQtdePorCaixa">
+			</div>
 
-		  <div class="table" ng-show="showFiltro">
 			<div class="tr">
-			  <span class="td" style="border-bottom: none;">Filtro de produto:</span>
-			  <span class="td" style="border-bottom: none;"><input type="text" ng-model="pedidoFiltroProduto" /></span>
-			</div>
-			<div class="tr">
-			  <span class="td" style="border-bottom: none;">Filtro de cliente:</span>
-			  <span class="td" style="border-bottom: none;"><input type="text" ng-model="pedidoFiltroCliente" /></span>
-			</div>
-			<div class="tr">
-			  <span class="td" style="border-bottom: none;">Filtro de container:</span>
-			  <span class="td" style="border-bottom: none;"><input type="text" ng-model="pedidoFiltroContainer" /></span>
-			  <span class="td" style="border-bottom: none;"><button ng-click="pedidoFiltroProduto=''; pedidoFiltroCliente=''; pedidoFiltroContainer='';">limpar</button></span>
-			</div>
-			<a href ng-click="showFiltro=false">Esconder filtros</a>
-		  </div>
-		  -->
-		  <!-- END PEDIDOS FILTRO -->
-		  
+			  <input type="text" ng-model="pedidoViewFiltroCliente" />
 
-		  <div style="background: white; position: fixed; z-index: 2;">
-			INSERT TABLE CONTROLS HERE<br>
-			LINK TO SHOW/HIDE COLUMNS OR CHECKBOXES<br>
-			INCLUDE FILTROS
+			  <b>Cliente</b>
+			  código <input type="checkbox" ng-model="pedidoViewShowClienteCodigo">
+			  / vendedor <input type="checkbox" ng-model="pedidoViewShowClienteVendedor">
+			  / <b>Pedido</b>
+			  observações <input type="checkbox" ng-model="pedidoViewShowPedidoObs">
+			  / data criada <input type="checkbox" ng-model="pedidoViewShowPedidoDataCriada">
+			</div>
+
+			<div class="tr">
+			  <input type="text" ng-model="pedidoViewFiltroContainer" />
+			  <b>Container</b>
+			  sobrando <input type="checkbox" ng-model="pedidoViewShowContainerSobrando">
+			  / chegando <input type="checkbox" ng-model="pedidoViewShowContainerChegando">
+			  / previsão <input type="checkbox" ng-model="pedidoViewShowContainerPrevisao">
+			</div>
+			
 		  </div>
 
 		  <!-- PADDING TO AVOID CONTROLS FROM COVERING TABLE -->
@@ -76,68 +76,161 @@
 			<div class="tr">
 			  <span class="td">&nbsp;</span>
 			</div>
-		  </div>
-		  
-		  <div class="table">
 			<div class="tr">
-			  <span class="td" ng-show="isAdmin" style="border-bottom: none;">&nbsp;</span>
+			  <span class="td">&nbsp;</span>
+			</div>
+		  </div>
+		  <!-- END PADDING -->
+
+		  <!-- COLUMNS -->
+		  <div class="table">
+
+			<!--
+				<div class="tr">
+				  <span class="td" style="border-bottom: none;">
+					<input type="text" class="number" ng-model="pedidoViewFiltroProduto" />
+				  </span>
+				  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowProdutoNome">&nbsp;</span>
+				  <span class="td" style="border-bottom: none;">
+					<button ng-click="pedidoViewFiltroProduto=''; pedidoViewFiltroCliente=''; pedidoViewFiltroContainer='';">Limpar</button>
+				  </span>
+				  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowProdutoJaSep">&nbsp;</span>
+				  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowProdutoQtdePorCaixa">&nbsp;</span>
+				  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowClienteCodigo">&nbsp;</span>
+				  <span class="td" style="border-bottom: none;">
+					<input type="text" ng-model="pedidoViewFiltroCliente" />
+				  </span>
+				  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowClienteVendedor">&nbsp;</span>
+				  <span class="td" style="border-bottom: none;">
+					<input type="text" ng-model="pedidoViewFiltroContainer" />
+				  </span>
+				  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowContainerSobrando">&nbsp;</span>
+				  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowContainerChegando">&nbsp;</span>
+				  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowContainerPrevisao">&nbsp;</span>
+				  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowPedidoObs">&nbsp;</span>
+				  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowPedidoDataCriada">&nbsp;</span>
+				</div>
+				-->
+
+			<div class="tr">
 			  <span class="td" style="border-bottom: none;">
 				<a href ng-click="pedidoTableOrder=['codigoProduto', pedidoEstadoOrder, 'dataCriadaNum']">
 				  Cód. prod
 				</a>
 			  </span>
+			  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowProdutoNome">Nome prod</span>
 			  <span class="td" style="border-bottom: none;">Qtde</span>
-			  <span class="td" style="border-bottom: none;">Já sep.</span>
+			  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowProdutoJaSep">Já sep.</span>
+			  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowProdutoQtdePorCaixa">Qtde cx.</span>
+			  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowClienteCodigo">Cod cli</span>
 			  <span class="td" style="border-bottom: none;">
 				<a href ng-click="pedidoTableOrder=[pedidoClienteOrder, 'codigoProduto', pedidoEstadoOrder, 'dataCriadaNum']">
 				  Cliente
 				</a>
 			  </span>
+			  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowClienteVendedor">Vend</span>
 			  <span class="td" style="border-bottom: none;">
 				<a href ng-click="pedidoTableOrder=[pedidoEstadoOrder, 'codigoProduto', 'dataCriadaNum']"> <!-- removed pedidoClienteOrder -->
 				  Estado
 				</a>
 			  </span>
-			  <span class="td" style="border-bottom: none;">Obs.</span>
-			  <span class="td" style="border-bottom: none;">
+			  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowContainerSobrando">Sobrando</span>
+			  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowContainerChegando">Chegando</span>
+			  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowContainerPrevisao">Previsao</span>
+			  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowPedidoObs">Obs.</span>
+			  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowPedidoDataCriada">
 				<a href ng-click="pedidoTableOrder=['dataCriadaNum']">
 				  Data
 				</a>
 			  </span>
 			</div>
 
-			<!--
-				<div class="tr">
-				  <span class="td"><img src="img/file_edit.png" alt="+" /></span>
-				  <span class="td" title="kit queijo">143137</span>
-				  <span class="td">25000</span>
-				  <span class="td">Redd Marketing</span>
-				  <span class="td">Rodrigo</span>
-				  <span class="td">Desistencia</span>
-				  <span class="td">Zelia</span>
-				  <span class="td">120000</span>
-				  <span class="td">ter 7 out</span>
-				</div>
-				-->
 
-			<div ng-repeat="pedido in pedidos | orderBy:pedidoTableOrder" ng-class="['tr', pedidoClass(pedidoEstadoOrder(pedido)), 'data']" ng-show="pedidoFiltroCorresponde(pedido.codigoProduto, clientesObj[pedido.codigoCliente].nome, produtosObj[pedido.codigoProduto].containers, pedidoFiltroProduto, pedidoFiltroCliente, pedidoFiltroContainer, pedido.estado)">
-			  <span class="td" ng-show="isAdmin"><img src="img/file_edit.png" alt="edit" ng-click="editPedidoOpen(pedido)" /></span>	
-			  <span class="td hint--no-animate" data-hint="{{produtosObj[pedido.codigoProduto.toUpperCase()].nome}}">{{pedido.codigoProduto}}</span>
-			  <span class="td hint--no-animate" data-hint="Sobram {{produtosObj[pedido.codigoProduto].sobrando}}">{{pedido.qtdePedida}}</span>
-			  <span class="td">{{pedido.qtdeJaSeparada}}</span>
-			  <span class="td hint--no-animate" data-hint="{{vendedoresObj[clientesObj[pedido.codigoCliente].idVendedor].nome}} ({{clientesObj[pedido.codigoCliente].codigo}})">
+			<div ng-repeat="pedido in pedidos | orderBy:pedidoTableOrder" ng-class="['tr', pedidoClass(pedidoEstadoOrder(pedido)), 'data']" ng-show="pedidoFiltroCorresponde(pedido.codigoProduto, clientesObj[pedido.codigoCliente].nome, produtosObj[pedido.codigoProduto].containers, pedidoViewFiltroProduto, pedidoViewFiltroCliente, pedidoViewFiltroContainer, pedido.estado)">
+
+			  <span class="td">
+				{{pedido.codigoProduto}}
+			  </span>
+
+			  <span class="td" ng-show="pedidoViewShowProdutoNome">
+				{{produtosObj[pedido.codigoProduto.toUpperCase()].nome}}
+			  </span>
+
+			  <span class="td">
+				{{pedido.qtdePedida}}
+			  </span>
+
+			  <span class="td" ng-show="pedidoViewShowProdutoJaSep">
+				{{pedido.qtdeJaSeparada}}
+			  </span>
+
+			  <span class="td" ng-show="pedidoViewShowProdutoQtdePorCaixa">
+				{{produtosObj[pedido.codigoProduto.toUpperCase()].qtdePorCaixa}}
+			  </span>
+
+			  <span class="td" ng-show="pedidoViewShowClienteCodigo">
+				{{clientesObj[pedido.codigoCliente].codigo}}
+			  </span>
+
+			  <span class="td">
 				{{clientesObj[pedido.codigoCliente].nome}}
-			  </span>			  
+			  </span>
+
+			  <span class="td" ng-show="pedidoViewShowClienteVendedor">
+				{{vendedoresObj[clientesObj[pedido.codigoCliente].idVendedor].nome}}
+			  </span>
+
 			  <span class="td">
 				{{pedido.estado}}
-				<span ng-show="pedido.estado==='Container'" class="hint--left" data-hint="{{produtosObj[pedido.codigoProduto].chegando}}">
-				  {{produtosObj[pedido.codigoProduto].containers}}
+				<span ng-show="pedido.estado==='Container'">
+				  {{produtosObj[pedido.codigoProduto.toUpperCase()].containers}}
 				</span>
 			  </span>
-			  <span class="td">{{pedido.obs}}</span>
-			  <span class="td">{{getFormattedDate(pedido.dataCriadaNum)}}</span>
+
+			  <span class="td" ng-show="pedidoViewShowContainerSobrando">
+				{{produtosObj[pedido.codigoProduto.toUpperCase()].sobrando}}
+			  </span>
+
+			  <span class="td" ng-show="pedidoViewShowContainerChegando">
+				{{produtosObj[pedido.codigoProduto.toUpperCase()].chegando}}	
+			  </span>
+
+			  <span class="td" ng-show="pedidoViewShowContainerPrevisao">
+				{{getFormattedDate(containersObj[firstInParens(produtosObj[pedido.codigoProduto.toUpperCase()].chegando)].dataPrevisaoNum)}}
+			  </span>
+
+			  <span class="td" ng-show="pedidoViewShowPedidoObs">
+				{{pedido.obs}}
+			  </span>
+
+			  <span class="td" ng-show="pedidoViewShowPedidoDataCriada">
+				{{getFormattedDate(pedido.dataCriadaNum)}}
+			  </span>
+
+			  <!--
+				  <span class="td hint--no-animate" data-hint="{{produtosObj[pedido.codigoProduto.toUpperCase()].nome}}">{{pedido.codigoProduto}}</span>
+				  
+				  <span class="td hint--no-animate" data-hint="Sobram {{produtosObj[pedido.codigoProduto].sobrando}}">{{pedido.qtdePedida}}</span>
+				  
+				  <span class="td">{{pedido.qtdeJaSeparada}}</span>
+				  
+				  <span class="td hint--no-animate" data-hint="{{vendedoresObj[clientesObj[pedido.codigoCliente].idVendedor].nome}} ({{clientesObj[pedido.codigoCliente].codigo}})">
+					{{clientesObj[pedido.codigoCliente].nome}}
+				  </span>
+				  
+				  <span class="td">
+					{{pedido.estado}}
+					<span ng-show="pedido.estado==='Container'" class="hint--left" data-hint="{{produtosObj[pedido.codigoProduto].chegando}}">
+					  {{produtosObj[pedido.codigoProduto].containers}}
+					</span>
+				  </span>
+				  
+				  <span class="td">{{pedido.obs}}</span>
+				  
+				  <span class="td">{{getFormattedDate(pedido.dataCriadaNum)}}</span>
+				  -->
+			  
 			</div>
-			
 		  </div>
 
 		</pane>

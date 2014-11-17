@@ -223,9 +223,34 @@
         'Cancelado',
       ];
 
+      $scope.pedidoViewFiltroProduto = "";
+      $scope.pedidoViewFiltroCliente = "";
+      $scope.pedidoViewFiltroContainer = "";
+
       $scope.pedidoFiltroProduto = "";
       $scope.pedidoFiltroCliente = "";
       $scope.pedidoFiltroContainer = "";
+
+      $scope.firstInParens = function(s) {
+        var r=/\((.*?)\)/g, a=[], m;
+        while (m = r.exec(s)) {
+          a.push(m[1]);
+        }
+        var result = a[0] || "";
+        return result;
+      };
+
+      // PEDIDO VIEW SHOW BOOLEANS
+      $scope.pedidoViewShowProdutoNome = false;
+      $scope.pedidoViewShowProdutoJaSep = false;
+      $scope.pedidoViewShowProdutoQtdePorCaixa = false;
+      $scope.pedidoViewShowClienteCodigo = false;
+      $scope.pedidoViewShowClienteVendedor = false;
+      $scope.pedidoViewShowContainerSobrando = false;
+      $scope.pedidoViewShowContainerChegando = false;
+      $scope.pedidoViewShowContainerPrevisao = false;
+      $scope.pedidoViewShowPedidoObs = false;
+      $scope.pedidoViewShowPedidoDataCriada = false;
 
       $scope.pedidoFiltroCorresponde = function(pedidoCodigoProduto, pedidoNomeCliente, pedidoContainer, buscaCodigoProduto, buscaCodigoCliente, buscaContainer, pedidoEstado) {
         pedidoNomeCliente = pedidoNomeCliente || "";
@@ -581,7 +606,7 @@
         } else {
           dateNumA = $scope.containersObj[chegandoA.container].dataPrevisaoNum;
         }
-          
+        
         if ($scope.containersObj[chegandoB.container] === undefined) {
           dateNumB = 1577898000000;
         } else {
@@ -696,7 +721,7 @@
       };
 
       /*
-      $scope.computeSobrandoChegando = function(codigo) {
+        $scope.computeSobrandoChegando = function(codigo) {
         codigo = codigo.toUpperCase();
         var chegandoTotal = 0;
         var containers = [];
@@ -704,16 +729,16 @@
         var chegandoSummary = "";
 
         angular.forEach($scope.chegandos.sort(function(a, b) { if (a.container > b.container) { return 1; } else if (a.container < b.container) { return -1; } else { return 0; } }), function(chegando, pushId) {
-          if (chegando.codigoProduto === codigo && !chegando.chegou) {
-            chegandoSummary += chegando.quantidade.toString() + " (" + chegando.container + ") ";
-            chegandoTotal += parseInt(chegando.quantidade);
-            if (containers.indexOf(chegando.container) === -1) {
-              containers.push(chegando.container);
-            }
-          }
+        if (chegando.codigoProduto === codigo && !chegando.chegou) {
+        chegandoSummary += chegando.quantidade.toString() + " (" + chegando.container + ") ";
+        chegandoTotal += parseInt(chegando.quantidade);
+        if (containers.indexOf(chegando.container) === -1) {
+        containers.push(chegando.container);
+        }
+        }
         });
         if (isNaN(chegandoTotal)) {
-          chegandoTotal = 0;
+        chegandoTotal = 0;
         }
 
         containers = containers.sort().join(", ");
@@ -721,22 +746,22 @@
         var sobrando = chegandoTotal;
 
         angular.forEach($scope.pedidos, function(pedido, pushId) {
-          if (pedido.codigoProduto.toUpperCase() === codigo && pedido.estado === 'Container') {
-            sobrando -= (pedido.qtdePedida - pedido.qtdeJaSeparada);
-          }
+        if (pedido.codigoProduto.toUpperCase() === codigo && pedido.estado === 'Container') {
+        sobrando -= (pedido.qtdePedida - pedido.qtdeJaSeparada);
+        }
         });
 
         if (sobrando < 0) {
-          sobrando = 0;
+        sobrando = 0;
         }
         
         $scope.updateProduto(codigo,
-                             $scope.produtosObj[codigo].nome,
-                             $scope.produtosObj[codigo].qtdePorCaixa,
-                             sobrando,
-                             chegandoSummary,
-                             containers);
-      };
+        $scope.produtosObj[codigo].nome,
+        $scope.produtosObj[codigo].qtdePorCaixa,
+        sobrando,
+        chegandoSummary,
+        containers);
+        };
       */
       
       $scope.forceComputeSobrando = function() {
