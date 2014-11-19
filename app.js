@@ -188,8 +188,8 @@
         switch (pedido.estado) {
         case 'Reserva': return "7";
         case 'Desistencia': return "2";
-        case 'Container': return "3" + $scope.produtosObj[pedido.codigoProduto].containers;
-        case 'Desistencia do Container': return "4";
+        case 'Desistencia do Container': return "3";
+        case 'Container': return "4" + $scope.produtosObj[pedido.codigoProduto].containers;
         case 'Faturado': return "5";
         case 'Cancelado': return "6";
         default: return "0";
@@ -206,8 +206,8 @@
         switch (estado[0]) {
         case "7": return 'reservaStyle';
         case "2": return 'desistenciaStyle';
-        case "3": return 'containerStyle';
-        case "4": return 'desistenciaDoContainerStyle';
+        case "3": return 'desistenciaDoContainerStyle';
+        case "4": return 'containerStyle';
         case "5": return 'faturadoStyle';
         case "6": return 'canceladoStyle';
         default: return '';
