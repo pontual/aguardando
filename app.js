@@ -186,7 +186,7 @@
 
       $scope.pedidoEstadoOrder = function(pedido) {
         switch (pedido.estado) {
-        case 'Reserva': return "10";
+        case 'Reserva': return "7";
         case 'Desistencia': return "2";
         case 'Container': return "3" + $scope.produtosObj[pedido.codigoProduto].containers;
         case 'Desistencia do Container': return "4";
@@ -204,7 +204,7 @@
 
       $scope.pedidoClass = function(estado) {
         switch (estado[0]) {
-        case "10": return 'reservaStyle';
+        case "7": return 'reservaStyle';
         case "2": return 'desistenciaStyle';
         case "3": return 'containerStyle';
         case "4": return 'desistenciaDoContainerStyle';
