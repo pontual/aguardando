@@ -204,10 +204,10 @@
 
       $scope.pedidoClass = function(estado) {
         switch (estado[0]) {
-        case "1": return 'desistenciaStyle';
-        case "2": return 'containerStyle';
-        case "3": return 'desistenciaDoContainerStyle';
-        case "4": return 'reservaStyle';
+        case "1": return 'reservaStyle';
+        case "2": return 'desistenciaStyle';
+        case "3": return 'containerStyle';
+        case "4": return 'desistenciaDoContainerStyle';
         case "5": return 'faturadoStyle';
         case "6": return 'canceladoStyle';
         default: return '';
