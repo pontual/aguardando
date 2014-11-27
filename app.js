@@ -532,7 +532,7 @@
       $scope.containersSync = $firebase(containersRef);
       $scope.containersObj = $scope.containersSync.$asObject();
       $scope.containers = $scope.containersSync.$asArray();
-      $scope.containerOrder = "nome";
+      $scope.containerOrder = "numero";
 
       $scope.setContainer = function(numero, data, hora, chegou) {
         $scope.containersSync.$set(numero, {
@@ -684,7 +684,7 @@
           chegandoTotal = 0;
         }
 
-        containers = containers.sort().join(", ");
+        containers = containers.join(", ");
 
         // var sobrando = chegandoTotal;
         var totalPedidos = 0;
