@@ -775,6 +775,16 @@
         });
       };
 
+      // DANGER: REMOVE FATURADO, RESERVA AND CANCELADO
+      $scope.removeNonAguardando = function() {
+        angular.forEach($scope.pedidos, function(pedido, pushId) {
+          if (pedido.estado === 'Reserva' || pedido.estado === 'Cancelado' || pedido.estado === 'Faturado') {
+            // console.log(pedido.cliente + " " + pedido.dataAtualizada + " " + pedido.estado);
+            $scope.pedidos.$remove(pedido);
+          }
+        });
+      }
+
       $scope.computeContainerSobrando = function(numero) {
         angular.forEach($scope.chegandos, function(chegando, id) {
           if (chegando.container === numero) {
