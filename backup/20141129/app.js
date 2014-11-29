@@ -1,6 +1,6 @@
 (function() {
   var app = angular.module('aguardando', ['components', 'firebase', 'ui.bootstrap', 'angularPikaday']);
-  var ref = new Firebase("https://faia.firebaseio.com/aguardando");
+  var ref = new Firebase("https://aguardando.firebaseio.com/aguardando");
 
   function formSetEditable(formId, state) {
     var form = document.getElementById(formId);
@@ -685,52 +685,10 @@
         // var sobrando = chegandoTotal;
         var totalPedidos = 0;
 
-
-        function getIndicesNeeded(desired, amounts) {
-          var result = [];
-          var index = 0;
-          var iterations = 0;
-          var iterLimit = 3;
-
-          if (isNaN(desired)) {
-            desired = 0;
-          }
-
-          while (desired > 0 && amounts[amounts.length-1] > 0 && iterations < iterLimit) {
-            iterations++;
-            if (amounts[index] > 0) {
-              result.push(index);
-            }
-            var toSubtract = Math.min(amounts[index], desired);
-            desired -= toSubtract;
-            amounts[index] -= toSubtract;
-            index++;
-          }
-          // return {indices: result, newAmounts: amounts};
-          return result;
-        }
-
-        var proximoContainer_chegandos = chegandoPorContainer.slice();
-        var proximoContainer_labels = containerLabels.slice();
-        
         angular.forEach($scope.pedidos, function(pedido, pushId) {
           if (pedido.codigoProduto.toUpperCase() === codigo && pedido.estado === 'Container') {
             // sobrando -= (pedido.qtdePedida - pedido.qtdeJaSeparada);
             totalPedidos += (pedido.qtdePedida - pedido.qtdeJaSeparada);
-
-            var qtdeDesejada = pedido.qtdePedida - pedido.qtdeJaSeparada;
-
-            var labelsIndices = getIndicesNeeded(qtdeDesejada, proximoContainer_chegandos);
-
-            var proximoContainerCommaSep = "";
-            labelsIndices.forEach(function(index) {
-              proximoContainerCommaSep += proximoContainer_labels[index] + ", ";
-            });
-            
-            pedido.proximoContainer = proximoContainerCommaSep.slice(0,proximoContainerCommaSep.length-2);
-            
-            $scope.pedidos.$save(pedido)
-              .then(function() { $scope.notification = "Definido proximo container de pedido " + pedido.codigoCliente + " " + pedido.codigoProduto; });
           }
         });
 

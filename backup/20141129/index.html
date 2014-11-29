@@ -134,9 +134,6 @@
 				  Estado
 				</a>
 			  </span>
-			  <span class="td" style="border-bottom: none;">
-				Próx. Ctn.
-			  </span>
 			  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowContainerSobrando">Sobrando</span>
 			  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowContainerChegando">Chegando</span>
 			  <span class="td" style="border-bottom: none;" ng-show="pedidoViewShowContainerPrevisao">Previsao</span>
@@ -185,15 +182,9 @@
 
 			  <span class="td">
 				{{pedido.estado}}
-				<!--
 				<span ng-show="pedido.estado==='Container'">
 				  {{produtosObj[pedido.codigoProduto.toUpperCase()].containers}}
 				</span>
-				-->
-			  </span>
-
-			  <span class="td">
-				{{pedido.proximoContainer}}
 			  </span>
 
 			  <span class="td" ng-show="pedidoViewShowContainerSobrando">
@@ -495,8 +486,7 @@
 			  <span class="td">
 				{{pedido.estado}}
 				<span ng-show="pedido.estado==='Container'" class="hint--left" data-hint="{{produtosObj[pedido.codigoProduto].chegando}}">
-				  <!-- {{produtosObj[pedido.codigoProduto].containers}} -->
-				  {{pedido.proximoContainer}}
+				  {{produtosObj[pedido.codigoProduto].containers}}
 				</span>
 			  </span>
 			  <span class="td">{{pedido.obs}}</span>
