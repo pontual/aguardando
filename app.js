@@ -200,6 +200,10 @@
         return $scope.clientesObj[pedido.codigoCliente].nome;
       };
 
+      $scope.pedidoVendedorOrder = function(pedido) {
+        return $scope.vendedoresObj[$scope.clientesObj[pedido.codigoCliente].idVendedor].nome;
+      };
+
       $scope.pedidoTableOrder = ['codigoProduto', $scope.pedidoEstadoOrder, 'dataCriadaNum'];
 
       $scope.pedidoClass = function(estado) {
@@ -528,7 +532,7 @@
       $scope.containersSync = $firebase(containersRef);
       $scope.containersObj = $scope.containersSync.$asObject();
       $scope.containers = $scope.containersSync.$asArray();
-      $scope.containerOrder = "nome";
+      $scope.containerOrder = "numero";
 
       $scope.setContainer = function(numero, data, hora, chegou) {
         $scope.containersSync.$set(numero, {
@@ -680,7 +684,7 @@
           chegandoTotal = 0;
         }
 
-        containers = containers.sort().join(", ");
+        containers = containers.join(", ");
 
         // var sobrando = chegandoTotal;
         var totalPedidos = 0;
@@ -812,6 +816,16 @@
           $scope.computeSobrandoChegando(produto.codigo);
         });
       };
+
+      // DANGER: REMOVE FATURADO, RESERVA AND CANCELADO
+      $scope.removeNonAguardando = function() {
+        angular.forEach($scope.pedidos, function(pedido, pushId) {
+          if (pedido.estado === 'Reserva' || pedido.estado === 'Cancelado' || pedido.estado === 'Faturado') {
+            // console.log(pedido.cliente + " " + pedido.dataAtualizada + " " + pedido.estado);
+            $scope.pedidos.$remove(pedido);
+          }
+        });
+      }
 
       $scope.computeContainerSobrando = function(numero) {
         angular.forEach($scope.chegandos, function(chegando, id) {
