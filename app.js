@@ -425,7 +425,7 @@
         modalInstance.result.then(function(selected) {
           selected.pedido.dataCriadaNum = $scope.getms(selected.pedido.dataCriada + " " + selected.pedido.horaCriada);
           $scope.pedidos.$save(selected.pedido)
-            .then(function() { $scope.computeSobrandoChegando(selected.pedido.codigoProduto.toUpperCase()); })
+            .then(function() { console.log("compute sobr. cheg. " + selected.pedido.codigoProduto.toUpperCase()); $scope.computeSobrandoChegando(selected.pedido.codigoProduto.toUpperCase()); })
             .then(function() { $scope.notification = "Modificado pedido de " + selected.pedido.qtdePedida + " pçs. " + selected.pedido.codigoProduto + " " + $scope.clientesObj[selected.pedido.codigoCliente].nome;} );
         }, function() {
           // do nothing
@@ -716,8 +716,13 @@
 
         var proximoContainer_chegandos = chegandoPorContainer.slice();
         var proximoContainer_labels = containerLabels.slice();
+
+        // MUST BE SORTED BY DATE
+        var pedidosByDate = $scope.pedidos.sort(function (a, b) {
+          return a.dataCriadaNum - b.dataCriadaNum;
+        });
         
-        angular.forEach($scope.pedidos, function(pedido, pushId) {
+        angular.forEach(pedidosByDate, function(pedido, pushId) {
           if (pedido.codigoProduto.toUpperCase() === codigo && pedido.estado === 'Container') {
             // sobrando -= (pedido.qtdePedida - pedido.qtdeJaSeparada);
             totalPedidos += (pedido.qtdePedida - pedido.qtdeJaSeparada);
