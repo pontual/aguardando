@@ -1,6 +1,6 @@
 (function() {
   var app = angular.module('aguardando', ['components', 'firebase', 'ui.bootstrap', 'angularPikaday']);
-  var ref = new Firebase("https://faia.firebaseio.com/aguardando");
+  var ref = new Firebase("https://aguardando.firebaseio.com/aguardando");
 
   function formSetEditable(formId, state) {
     var form = document.getElementById(formId);
