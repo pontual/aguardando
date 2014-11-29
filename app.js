@@ -16,7 +16,8 @@
       $scope.loggedIn = true;
       $scope.operatorEmail = authData.password.email;
 
-      $scope.notification = " ";
+      var VERSION = "2014/11/29"
+      $scope.notification = "Atualização " + VERSION;
 
       $scope.alertarResultado = function(message) {
         $scope.alterarSenhaResultado = message;
