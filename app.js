@@ -193,6 +193,7 @@
         case 'Container': return "4" + $scope.produtosObj[pedido.codigoProduto].containers;
         case 'Faturado': return "5";
         case 'Cancelado': return "6";
+        case 'Controle': return "8";
         default: return "0";
         }
       };
@@ -215,6 +216,7 @@
         case "4": return 'containerStyle';
         case "5": return 'faturadoStyle';
         case "6": return 'canceladoStyle';
+        case "8": return 'controleStyle';
         default: return '';
         }
       };
@@ -226,6 +228,7 @@
         'Desistencia do Container',
         'Faturado',
         'Cancelado',
+        'Controle',
       ];
 
       $scope.pedidoViewFiltroProduto = "";
