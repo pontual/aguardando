@@ -194,8 +194,8 @@
         case 'Container': return "4" + pedido.proximoContainer;
         case 'Faturado': return "5";
         case 'Cancelado': return "6";
-        case 'Controle': return "8";
-        case 'Verificacao': return "9";
+        case 'Controle': return "9";
+        case 'Verificacao': return "8";
         default: return "0";
         }
       };
@@ -218,8 +218,8 @@
         case "4": return 'containerStyle';
         case "5": return 'faturadoStyle';
         case "6": return 'canceladoStyle';
-        case "8": return 'controleStyle';
-        case "9": return 'verificacaoStyle';
+        case "9": return 'controleStyle';
+        case "8": return 'verificacaoStyle';
         default: return '';
         }
       };
