@@ -764,7 +764,7 @@ END PEDIDOS -->
 			  <span class="td" ng-show="isAdmin"><img src="img/file_edit.png" ng-click="editContainerOpen(container)" /></span>
 			  <span class="td">{{container.numero}}</span>
 			  <span class="td">{{getFormattedDate(container.dataPrevisaoNum)}}</span>
-			  <span class="td">{{container.chegou}}</span>
+			  <span class="td"><span ng-show="container.chegou">Sim</span></span>
 			</div>
 		  </div>
 
