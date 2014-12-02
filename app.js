@@ -16,7 +16,7 @@
       $scope.loggedIn = true;
       $scope.operatorEmail = authData.password.email;
 
-      var VERSION = "2014/11/29"
+      var VERSION = "2014/12/2"
       $scope.notification = "Atualização " + VERSION;
 
       $scope.alertarResultado = function(message) {
@@ -195,6 +195,7 @@
         case 'Faturado': return "5";
         case 'Cancelado': return "6";
         case 'Controle': return "8";
+        case 'Verificacao': return "9";
         default: return "0";
         }
       };
@@ -218,6 +219,7 @@
         case "5": return 'faturadoStyle';
         case "6": return 'canceladoStyle';
         case "8": return 'controleStyle';
+        case "9": return 'verificacaoStyle';
         default: return '';
         }
       };
@@ -230,7 +232,8 @@
         'Faturado',
         'Cancelado',
         'Controle',
-      ];
+        'Verificacao', 
+     ];
 
       $scope.pedidoViewFiltroProduto = "";
       $scope.pedidoViewFiltroCliente = "";
