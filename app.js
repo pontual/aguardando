@@ -190,7 +190,8 @@
         case 'Reserva': return "7";
         case 'Desistencia': return "2";
         case 'Desistencia do Container': return "3";
-        case 'Container': return "4" + $scope.produtosObj[pedido.codigoProduto].containers;
+          // case 'Container': return "4" + $scope.produtosObj[pedido.codigoProduto].containers;
+        case 'Container': return "4" + pedido.proximoContainer;
         case 'Faturado': return "5";
         case 'Cancelado': return "6";
         case 'Controle': return "8";
