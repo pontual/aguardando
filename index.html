@@ -186,13 +186,14 @@
 			  <span class="td">
 				{{pedido.estado}}
 				<!--
-				<span ng-show="pedido.estado==='Container'">
-				  {{produtosObj[pedido.codigoProduto.toUpperCase()].containers}}
-				</span>
-				-->
+					<span ng-show="pedido.estado==='Container'">
+					  {{produtosObj[pedido.codigoProduto.toUpperCase()].containers}}
+					</span>
+					-->
 			  </span>
 
-			  <span class="td">
+			  <span class="td" ng-show="pedido.estado==='Container'">
+				<!-- {{produtosObj[pedido.codigoProduto].containers}} -->
 				{{pedido.proximoContainer}}
 			  </span>
 
@@ -238,15 +239,15 @@
 				  
 				  <span class="td">{{getFormattedDate(pedido.dataCriadaNum)}}</span>
 				  -->
-			  
+
 			</div>
 		  </div>
 
 		</pane>
 		<!-- END NEW PEDIDO VIEW -->
-		
 
- 		<!-- PEDIDOS TEMPLATES -->
+
+		<!-- PEDIDOS TEMPLATES -->
 		<pane heading="Pedidos">
 
 		  <!-- PEDIDOS MODAL TEMPLATE -->
@@ -306,7 +307,7 @@
 
 				<div class="tr">
 				  <span class="td" style="border-bottom: none;">&nbsp;</span>
-			  	  <span class="td" style="border-bottom: none;">Estado</span>
+				  <span class="td" style="border-bottom: none;">Estado</span>
 				  <span class="td" style="border-bottom: none;">Obs.</span>
 				</div>
 
@@ -506,7 +507,7 @@
 		  </div>
 		</pane>
 
-		
+
 		<!-- PEDIDOS
 			 <pane heading="Pedidos">
 			   Total: {{computed.pedidosTotal}}
@@ -558,7 +559,7 @@
 </pane>
 
 END PEDIDOS -->
-		
+
 		<!-- CHEGANDO -->
 		<pane heading="Chegando">
 
@@ -766,7 +767,7 @@ END PEDIDOS -->
 
 		</pane>
 		<!-- END CONTAINERS -->
-		
+
 		<!-- CLIENTES -->
 		<pane heading="Clientes">
 
@@ -1044,7 +1045,7 @@ END PEDIDOS -->
 		<!--
 			<pane heading="Pedidos Full" ng-show="false">
 			  -->
-		
+
 		<!-- ADD PEDIDO FORM -->
 		<!--
 			
@@ -1168,10 +1169,10 @@ END PEDIDOS -->
 
 
 
-		
-		
+
+
 	  </tabs>
-	  
+
 	</div>
   </body>
 </html>
