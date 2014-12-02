@@ -192,9 +192,11 @@
 					-->
 			  </span>
 
-			  <span class="td" ng-show="pedido.estado==='Container'">
-				<!-- {{produtosObj[pedido.codigoProduto].containers}} -->
-				{{pedido.proximoContainer}}
+			  <span class="td">&nbsp;
+				<span ng-show="pedido.estado==='Container'">
+				  <!-- {{produtosObj[pedido.codigoProduto].containers}} -->
+				  {{pedido.proximoContainer}}
+				</span>
 			  </span>
 
 			  <span class="td" ng-show="pedidoViewShowContainerSobrando">
