@@ -208,7 +208,8 @@
         return $scope.vendedoresObj[$scope.clientesObj[pedido.codigoCliente].idVendedor].nome;
       };
 
-      $scope.pedidoTableOrder = ['codigoProduto', $scope.pedidoEstadoOrder, 'dataCriadaNum'];
+      // $scope.pedidoTableOrder = ['codigoProduto', $scope.pedidoEstadoOrder, 'dataCriadaNum'];
+      $scope.pedidoTableOrder = [$scope.pedidoEstadoOrder, 'codigoProduto', 'dataCriadaNum'];
 
       $scope.pedidoTableOrderByEstado = [$scope.pedidoEstadoOrder, 'codigoProduto', 'dataCriadaNum'];
 
