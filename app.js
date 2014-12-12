@@ -16,7 +16,7 @@
       $scope.loggedIn = true;
       $scope.operatorEmail = authData.password.email;
 
-      var VERSION = "2014/12/2"
+      var VERSION = "2014/12/12"
       $scope.notification = "Atualização " + VERSION;
 
       $scope.alertarResultado = function(message) {
@@ -209,6 +209,8 @@
       };
 
       $scope.pedidoTableOrder = ['codigoProduto', $scope.pedidoEstadoOrder, 'dataCriadaNum'];
+
+      $scope.pedidoTableOrderByEstado = [$scope.pedidoEstadoOrder, 'codigoProduto', 'dataCriadaNum'];
 
       $scope.pedidoClass = function(estado) {
         switch (estado[0]) {
