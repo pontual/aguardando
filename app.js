@@ -11,13 +11,19 @@
   }
   
   app.controller("OrganizationController", ['$scope', '$firebase', '$modal', function($scope, $firebase, $modal) {
+
+    function updateNotification(newMessage) {
+      $scope.notification = "[" + moment().format("H:mm:ss") + "] " + newMessage;
+    }
+    
     function init(authData) {
       $scope.loginStatus = "Login válido até " + (new Date(authData.expires * 1000));
       $scope.loggedIn = true;
       $scope.operatorEmail = authData.password.email;
 
       var VERSION = "2014/12/12"
-      $scope.notification = "Atualização " + VERSION;
+      // $scope.notification = "Atualização " + VERSION;
+      updateNotification("Atualização 14/01/15");
 
       $scope.alertarResultado = function(message) {
         $scope.alterarSenhaResultado = message;
@@ -119,7 +125,7 @@
                                  })                      
           .then(function() { $scope.computeSobrandoChegando(codigo.toUpperCase()); })
           .then(function() { $scope.$broadcast("newProdutoAdded"); })
-          .then(function() { $scope.notification = "Assinalado " + codigo + " " + nome; });
+          .then(function() { updateNotification("Assinalado " + codigo + " " + nome); });
       };
 
       $scope.updateProduto = function(codigo, nome, qtdePorCaixa, sobrando, chegando, containers) {
@@ -138,8 +144,9 @@
                                    containers: containers,
                                  })                      
           .then(function() { $scope.$broadcast("newProdutoAdded"); })
-          .then(function() { $scope.notification = "Updated produto " + codigo;
-                             console.log("updated produto " + codigo); });
+          .then(function() { updateNotification("Updated produto " + codigo);
+                             //console.log("updated produto " + codigo);
+                           });
       };
 
       $scope.editProdutoOpen = function(produto) {
@@ -375,7 +382,7 @@
                               dataAtualizada: (new Date()).format("weekdayTime"),
                             })
           .then(function() { $scope.computeSobrandoChegando(pedido_codigoProduto.toUpperCase()); })
-          .then(function() { $scope.notification = "Adicionado pedido " + pedido_codigoCliente + " " + pedido_qtdePedida + "pçs " + pedido_codigoProduto; })
+          .then(function() { updateNotification("Adicionado pedido " + pedido_codigoCliente + " " + pedido_qtdePedida + "pçs " + pedido_codigoProduto); })
           .then(function() { $scope.$broadcast("newPedidoAdded"); });
       };
 
@@ -437,7 +444,7 @@
           selected.pedido.dataCriadaNum = $scope.getms(selected.pedido.dataCriada + " " + selected.pedido.horaCriada);
           $scope.pedidos.$save(selected.pedido)
             .then(function() { console.log("compute sobr. cheg. " + selected.pedido.codigoProduto.toUpperCase()); $scope.computeSobrandoChegando(selected.pedido.codigoProduto.toUpperCase()); })
-            .then(function() { $scope.notification = "Modificado pedido de " + selected.pedido.qtdePedida + " pçs. " + selected.pedido.codigoProduto + " " + $scope.clientesObj[selected.pedido.codigoCliente].nome;} );
+            .then(function() { updateNotification("Modificado pedido de " + selected.pedido.qtdePedida + " pçs. " + selected.pedido.codigoProduto + " " + $scope.clientesObj[selected.pedido.codigoCliente].nome); });
         }, function() {
           // do nothing
         });
@@ -489,7 +496,7 @@
                                 chegou: false,
                               })
           .then(function() { $scope.computeSobrandoChegando(chegando_codigoProduto); })
-          .then(function() { $scope.notification = "Adicionado chegando " + quantidade + " pçs " + chegando_codigoProduto; })
+          .then(function() { updateNotification("Adicionado chegando " + quantidade + " pçs " + chegando_codigoProduto); })
           .then(function() { $scope.$broadcast("newChegandoAdded"); });
       };
 
@@ -504,7 +511,7 @@
             chegando.chegou = novoEstado;
             $scope.chegandos.$save(chegando)
               .then(function() { $scope.computeSobrandoChegando(chegando.codigoProduto.toUpperCase()); })
-              .then(function() { $scope.notification = "Alterado container chegou " + chegando.codigoProduto + " " + chegando.container; });
+              .then(function() { updateNotification("Alterado container chegou " + chegando.codigoProduto + " " + chegando.container); });
           }
         });
       };
@@ -530,7 +537,7 @@
         modalInstance.result.then(function(selected) {
           $scope.chegandos.$save(selected.chegando)
             .then(function() { $scope.computeSobrandoChegando(selected.chegando.codigoProduto.toUpperCase()); })
-            .then(function() { $scope.notification = "Modificado chegando " + selected.chegando.codigoProduto + " " + selected.chegando.quantidade + " pçs."; });
+            .then(function() { updateNotification("Modificado chegando " + selected.chegando.codigoProduto + " " + selected.chegando.quantidade + " pçs."); });
         }, function() {
           
         });
@@ -750,7 +757,7 @@
             pedido.proximoContainer = proximoContainerCommaSep.slice(0,proximoContainerCommaSep.length-2);
             
             $scope.pedidos.$save(pedido)
-              .then(function() { $scope.notification = "Definido proximo container de pedido " + pedido.codigoCliente + " " + pedido.codigoProduto; });
+              .then(function() { updateNotification("Definido proximo container de pedido " + pedido.codigoCliente + " " + pedido.codigoProduto); });
           }
         });
 
@@ -828,7 +835,7 @@
       
       $scope.forceComputeSobrando = function() {
         angular.forEach($scope.produtos, function(produto, id) {
-          $scope.notification = produto.codigo;
+          updateNotification("Compute Sobrando " + produto.codigo);
           $scope.computeSobrandoChegando(produto.codigo);
         });
       };
