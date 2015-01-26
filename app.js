@@ -877,7 +877,7 @@
             var quantidade = parseInt(lineElems[2].replace(/"/g, ""));
             var container = lineElems[1].replace(/"/g, "");
             
-            $scope.addChegando(lineElems[0], parseInt(lineElems[1]), lineElems[2]);
+            $scope.addChegando(codigo, quantidade, container);
             // console.log("Add codigo " + codigo + " chegando " + quantidade + " container " + container);
           }
         });        
