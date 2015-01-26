@@ -885,6 +885,8 @@ END PEDIDOS -->
 		</pane>
 
 		<pane heading="Adic. Cheg. Lotes" ng-show="isAdmin">
+		  Formato: CODIGO, CONTAINER, QUANTIDADE. aspas (") são apagadas automaticamente.
+		  
 		  <form ng-submit="processarLoteChegandos(loteChegandos); loteChegandos='';">
 			<textarea cols="80" rows="10" ng-model="loteChegandos"></textarea>
 			<br>

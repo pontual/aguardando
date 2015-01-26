@@ -23,7 +23,7 @@
 
       var VERSION = "2014/12/12"
       // $scope.notification = "Atualização " + VERSION;
-      updateNotification("Atualização 14/01/15");
+      updateNotification("Atualização 26/01/15");
 
       $scope.alertarResultado = function(message) {
         $scope.alterarSenhaResultado = message;
@@ -871,8 +871,15 @@
       $scope.processarLoteChegandos = function(lote) {
         var lines = lote.split("\n");
         angular.forEach(lines, function(line) {
-          var lineElems = line.split(",");
-          $scope.addChegando(lineElems[0], parseInt(lineElems[1]), lineElems[2]);
+          if (line.length > 1) {
+            var lineElems = line.split(",");
+            var codigo = lineElems[0].replace(/"/g, "");
+            var quantidade = parseInt(lineElems[2].replace(/"/g, ""));
+            var container = lineElems[1].replace(/"/g, "");
+            
+            $scope.addChegando(lineElems[0], parseInt(lineElems[1]), lineElems[2]);
+            // console.log("Add codigo " + codigo + " chegando " + quantidade + " container " + container);
+          }
         });        
       };
       
