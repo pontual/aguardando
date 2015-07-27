@@ -23,7 +23,7 @@
 
       var VERSION = "2014/12/12"
       // $scope.notification = "Atualização " + VERSION;
-      updateNotification("Atualização 26/01/15");
+      updateNotification("Atualização 27/07/15");
 
       $scope.alertarResultado = function(message) {
         $scope.alterarSenhaResultado = message;
@@ -849,6 +849,15 @@
           }
         });
       }
+
+      // DANGER: REMOVE CHEGOU
+      $scope.removeChegou = function() {
+        angular.forEach($scope.chegandos, function(chegando, pushId) {
+          if ($scope.containersObj[chegando.container].chegou) {
+            $scope.chegandos.$remove(chegando);
+          }
+        });
+      };                       
 
       $scope.computeContainerSobrando = function(numero) {
         angular.forEach($scope.chegandos, function(chegando, id) {
